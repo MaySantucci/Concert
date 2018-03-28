@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Near Me</string>
+    <string name="my_profile">Il mio profilo</string>
+    <string name="my_group">Il mio gruppo</string>
+    <string name="my_pub">Il mio locale</string>
+    <string name="settings">Impostazioni</string>
+    <string name="my_account">Account</string>
+    <string name="add_group">Aggiungi gruppo</string>
+    <string name="add_pub">Aggiungi un locale</string>
+    <string name="change_email">Cambia email</string>
+    <string name="change_pw">Cambia password</string>
+    <string name="delete_account">Elimina profilo</string>
+    <string name="log_out">Esci</string>
+</resources>
