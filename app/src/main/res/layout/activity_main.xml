@@ -9,7 +9,7 @@
 
     <!-- android:gravity="center_vertical" -->
     <Button
-        android:id="@+id/mappa"
+        android:id="@+id/map"
         android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,14 +17,27 @@
         android:onClick="onClick"/>
 
     <Button
-        android:id="@+id/eventi"
-        android:layout_below="@id/mappa"
+        android:id="@+id/events"
+        android:layout_below="@id/map"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="eventi"
         android:onClick="onClick"/>
-<TextView
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/prova"/>
+
+    <Button
+        android:id="@+id/artists"
+        android:layout_below="@id/events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="artisti"
+        android:onClick="onClick"/>
+
+    <Button
+        android:id="@+id/pubs"
+        android:layout_below="@id/artists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="locali"
+        android:onClick="onClick"/>
+
 </LinearLayout>

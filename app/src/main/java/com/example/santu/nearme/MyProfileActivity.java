@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
 import android.content.Intent;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -31,8 +32,7 @@ public class MyProfileActivity extends DrawerMenuActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent i = new Intent (this, MainActivity.class);
-                startActivity(i);
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
 
             case R.id.change_email:

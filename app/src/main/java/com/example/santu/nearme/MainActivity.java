@@ -18,13 +18,19 @@ public class MainActivity extends DrawerMenuActivity {
 
     public void onClick(View view){
         switch (view.getId()){
-            case R.id.mappa:
+            case R.id.map:
                 Intent mappa = new Intent (this, MapActivity.class);
                 startActivity(mappa);
                 break;
-            case R.id.eventi:
+            case R.id.events:
                 Intent eventi = new Intent (this, AllEventsActivity.class);
                 startActivity(eventi);
+                break;
+            case R.id.artists:
+                //TODO
+                break;
+            case R.id.pubs:
+                //TODO
                 break;
         }
     }
