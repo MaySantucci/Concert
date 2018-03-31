@@ -18,22 +18,9 @@
         </activity>
 
 
-        <activity android:name=".MapActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.santu.nearme.MainActivity" />
-        </activity>
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAQIU91AHk2zXYsOPjhXx6WKY_S8lzqV3Y" />
-
-
-        <activity android:name=".AllEventsActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.santu.nearme.MainActivity" />
-        </activity>
 
 
         <activity android:name=".DrawerMenuActivity">

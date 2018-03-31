@@ -35,6 +35,7 @@
     </LinearLayout>
 -->
 </android.support.v7.widget.Toolbar>
+
 <!-- Layout to contain contents of main body of screen (drawer will slide over this) -->
     <FrameLayout
         android:id="@+id/content_frame"
