@@ -17,11 +17,13 @@ public class MainActivity extends DrawerMenuActivity {
 
     private Fragment results;
     private TabLayout tabLayout;
+    private ViewPager viewPager;
+    int position;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        viewPager = findViewById(R.id.viewpager);
 
         // Create an adapter that knows which fragment should be shown on each page
         PagerAdapter adapter = new PagerAdapter(this, getSupportFragmentManager());
@@ -36,6 +38,22 @@ public class MainActivity extends DrawerMenuActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Artisti"));
         tabLayout.addTab(tabLayout.newTab().setText("Locali"));
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
     }
 
 

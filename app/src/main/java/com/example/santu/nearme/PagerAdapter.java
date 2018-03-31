@@ -49,13 +49,17 @@ public class PagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 c = "Mappa";
+                break;
             case 1:
                 c = "Eventi";
+                break;
             case 2:
                 c = "Artisti";
+                break;
             case 3:
                 c = "Locali";
 
+                break;
         }
         return c;
     }
