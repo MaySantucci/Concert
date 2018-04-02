@@ -4,12 +4,14 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.MotionEvent;
 
 public class PagerAdapter extends FragmentPagerAdapter {
 
     private Context mContext;
     private Fragment results;
     private CharSequence c;
+    private boolean isPagingEnabled = true;
 
     public PagerAdapter(Context context, FragmentManager fm) {
         super(fm);
@@ -63,5 +65,6 @@ public class PagerAdapter extends FragmentPagerAdapter {
         }
         return c;
     }
+
 
 }
