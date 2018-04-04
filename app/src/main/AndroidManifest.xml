@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.santu.nearme">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,47 +12,52 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAQIU91AHk2zXYsOPjhXx6WKY_S8lzqV3Y" />
-
 
         <activity android:name=".DrawerMenuActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.MainActivity" />
         </activity>
-
-        <activity android:name=".MyProfileActivity" >
+        <activity android:name=".MyProfileActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.DrawerMenuActivity" />
         </activity>
-
         <activity android:name=".MyGroupActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.DrawerMenuActivity" />
         </activity>
-
         <activity android:name=".MyPubActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.DrawerMenuActivity" />
         </activity>
+        <activity
+            android:name=".AddPubActivity"
+            android:label="@string/add_pub">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.santu.nearme.DrawerMenuActivity" />
+        </activity>
+        <activity
+            android:name=".AddArtistActivity"
+            android:label="@string/add_group">
+            <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.example.santu.nearme.DrawerMenuActivity" />
+        </activity>
     </application>
-
-
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>

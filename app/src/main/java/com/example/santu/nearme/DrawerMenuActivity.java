@@ -3,10 +3,6 @@ package com.example.santu.nearme;
 import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -14,15 +10,9 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class DrawerMenuActivity extends AppCompatActivity {
 
@@ -124,9 +114,21 @@ public class DrawerMenuActivity extends AppCompatActivity {
                 mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;
+            case R.id.add_group:
+                Intent add_group = new Intent (this, AddArtistActivity.class);
+                startActivity(add_group);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
+                break;
             case R.id.my_pub:
                 Intent my_pub = new Intent (this, MyPubActivity.class);
                 startActivity(my_pub);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
+                break;
+            case R.id.add_pub:
+                Intent add_pub = new Intent (this, AddPubActivity.class);
+                startActivity(add_pub);
                 mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;

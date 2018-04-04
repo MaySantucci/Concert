@@ -10,8 +10,18 @@
             android:title="@string/my_group"
             android:onClick="OnMenuItemClickListener" />
         <item
+            android:id="@+id/add_group"
+            android:title="@string/add_group"
+            android:onClick="OnMenuItemClickListener" />
+
+        <item
             android:id="@+id/my_pub"
             android:title="@string/my_pub"
+            android:onClick="OnMenuItemClickListener" />
+
+        <item
+            android:id="@+id/add_pub"
+            android:title="@string/add_pub"
             android:onClick="OnMenuItemClickListener" />
     </group>
 </menu>
