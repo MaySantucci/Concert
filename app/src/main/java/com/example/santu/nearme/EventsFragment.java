@@ -118,6 +118,9 @@ public class EventsFragment extends ListFragment {
                         // Storing each json item in variable
                         String locale = c.getString(TAG_lOCALE);
                         String artista = c.getString(TAG_ARTISTA);
+                        String data = c.getString(TAG_DATA);
+                        String ora = c.getString(TAG_ORA);
+                        String descrizione = c.getString(TAG_DESCRIZIONE);
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -125,6 +128,9 @@ public class EventsFragment extends ListFragment {
                         // adding each child node to HashMap key => value
                         map.put(TAG_lOCALE, locale);
                         map.put(TAG_ARTISTA, artista);
+                        map.put(TAG_DATA, data);
+                        map.put(TAG_ORA, ora);
+                        map.put(TAG_DESCRIZIONE, descrizione);
 
                         // adding HashList to ArrayList
                         eventsList.add(map);

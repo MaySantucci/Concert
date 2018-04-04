@@ -4,10 +4,16 @@
     android:layout_height="match_parent"
     tools:context="com.example.santu.nearme.ArtistsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <ListView android:id="@android:id/list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/artists" />
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false">
+    </ListView>
 
+    <TextView android:id="@android:id/empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No data"/>
 </FrameLayout>
