@@ -45,16 +45,16 @@ public class PubsFragment extends ListFragment {
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_PUBS = "pubs";
-    private static final String TAG_ID = "id_locale";
-    private static final String TAG_lOCALE = "locale";
-    private static final String TAG_INDIRIZZO = "indirizzo";
-    private static final String TAG_CIVICO = "civico";
-    private static final String TAG_CITTA = "citta";
+    private static final String TAG_PUBS = "pub";
+    private static final String TAG_ID = "id_pub";
+    private static final String TAG_lOCALE = "pub_name";
+    private static final String TAG_INDIRIZZO = "address";
+    private static final String TAG_CIVICO = "num_civico";
+    private static final String TAG_CITTA = "city";
     private static final String TAG_CAP = "cap";
     private static final String TAG_PROVINCIA = "provincia";
-    private static final String TAG_TELEFONO = "telefono";
-    private static final String TAG_EMAIL = "email";
+    private static final String TAG_TELEFONO = "phone";
+    private static final String TAG_EMAIL = "email_pub";
 
     // pubs JSONArray
     JSONArray pubs = null;
@@ -170,12 +170,25 @@ public class PubsFragment extends ListFragment {
                     public void run() {
                         /**
                          * Updating parsed JSON data into ListView
+                         private static final String TAG_SUCCESS = "success";
+                         private static final String TAG_PUBS = "pub";
+                         private static final String TAG_ID = "id_pub";
+                         private static final String TAG_lOCALE = "pub_name";
+                         private static final String TAG_INDIRIZZO = "address";
+                         private static final String TAG_CIVICO = "num_civico";
+                         private static final String TAG_CITTA = "city";
+                         private static final String TAG_CAP = "cap";
+                         private static final String TAG_PROVINCIA = "provincia";
+                         private static final String TAG_TELEFONO = "phone";
+                         private static final String TAG_EMAIL = "email_pub";
                          * */
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), pubsList,
-                                R.layout.pub_row, new String[]{TAG_ID,
-                                TAG_lOCALE},
-                                new int[]{R.id.id_pub, R.id.pub_name});
+                                R.layout.pub_row, new String[]{
+                                TAG_lOCALE,TAG_INDIRIZZO, TAG_CIVICO, TAG_CITTA, TAG_CAP,
+                                TAG_PROVINCIA, TAG_TELEFONO, TAG_EMAIL},
+                                new int[]{ R.id.pub_name, R.id.address, R.id.num_civico,
+                                        R.id.city, R.id.cap, R.id.provincia, R.id.phone, R.id.email_pub });
                         // updating listview
                         setListAdapter(adapter);
                     }

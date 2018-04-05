@@ -4,29 +4,29 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/id_gruppo"
+    <TextView android:id="@+id/id_group"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/nome_gruppo"
+    <TextView android:id="@+id/group_name"
         android:textSize="16sp"
         android:textStyle="bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/email"
+    <TextView android:id="@+id/email_group"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/numero"
+    <TextView android:id="@+id/phone"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <TextView android:id="@+id/genere"
+    <TextView android:id="@+id/type_music"
         android:textSize="16sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>

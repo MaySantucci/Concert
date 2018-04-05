@@ -45,12 +45,12 @@ public class ArtistsFragment extends ListFragment {
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_ARTISTS = "artists";
-    private static final String TAG_ARTISTA = "id_artista";
-    private static final String TAG_NOME = "nome_gruppo";
-    private static final String TAG_MAIL = "email";
-    private static final String TAG_TELEFONO = "telefono";
-    private static final String TAG_GENERE = "genere";
+    private static final String TAG_ARTISTS = "artist";
+    private static final String TAG_ARTISTA = "id_group";
+    private static final String TAG_NOME = "group_name";
+    private static final String TAG_MAIL = "email_group";
+    private static final String TAG_TELEFONO = "phone";
+    private static final String TAG_GENERE = "type_music";
 
     // artists JSONArray
     JSONArray artists = null;
@@ -163,8 +163,9 @@ public class ArtistsFragment extends ListFragment {
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), artistsList,
                                 R.layout.artist_row, new String[]{TAG_ARTISTA,
-                                TAG_NOME    },
-                                new int[]{R.id.artista, R.id.nome_gruppo});
+                                TAG_NOME, TAG_MAIL,TAG_TELEFONO, TAG_GENERE },
+                                new int[]{R.id.id_group, R.id.group_name, R.id.email_group,
+                                        R.id.phone, R.id.type_music, });
                         // updating listview
                         setListAdapter(adapter);
                     }

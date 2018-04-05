@@ -45,12 +45,13 @@ public class EventsFragment extends ListFragment {
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_EVENTS = "events";
-    private static final String TAG_lOCALE = "locale";
-    private static final String TAG_ARTISTA = "artista";
-    private static final String TAG_DATA = "data";
-    private static final String TAG_ORA = "ora";
-    private static final String TAG_DESCRIZIONE = "descrizione";
+    private static final String TAG_EVENTS = "event";
+    private static final String TAG_ID_EVENTO = "id_event";
+    private static final String TAG_lOCALE = "pub_name";
+    private static final String TAG_ARTISTA = "group_name";
+    private static final String TAG_DATA = "day";
+    private static final String TAG_ORA = "hour";
+    private static final String TAG_DESCRIZIONE = "description";
 
     // events JSONArray
     JSONArray events = null;
@@ -100,7 +101,7 @@ public class EventsFragment extends ListFragment {
 
 
             // Check your log cat for JSON reponse
-            Log.d("All Products: ", json.toString());
+            Log.d("All Events: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
@@ -116,6 +117,7 @@ public class EventsFragment extends ListFragment {
                         JSONObject c = events.getJSONObject(i);
 
                         // Storing each json item in variable
+                        String id_evento = c.getString(TAG_ID_EVENTO);
                         String locale = c.getString(TAG_lOCALE);
                         String artista = c.getString(TAG_ARTISTA);
                         String data = c.getString(TAG_DATA);
@@ -126,6 +128,7 @@ public class EventsFragment extends ListFragment {
                         HashMap<String, String> map = new HashMap<String, String>();
 
                         // adding each child node to HashMap key => value
+                        map.put(TAG_ID_EVENTO, id_evento);
                         map.put(TAG_lOCALE, locale);
                         map.put(TAG_ARTISTA, artista);
                         map.put(TAG_DATA, data);
@@ -161,9 +164,9 @@ public class EventsFragment extends ListFragment {
                          * */
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), eventsList,
-                                R.layout.event_row, new String[]{TAG_lOCALE,
-                                TAG_ARTISTA},
-                                new int[]{R.id.locale, R.id.artista});
+                                R.layout.event_row, new String[]{
+                                TAG_ARTISTA,TAG_lOCALE,TAG_DATA, TAG_ORA, TAG_DESCRIZIONE },
+                                new int[]{ R.id.artista, R.id.locale, R.id.data, R.id.ora, R.id.descrizione});
                         // updating listview
                         setListAdapter(adapter);
                     }
