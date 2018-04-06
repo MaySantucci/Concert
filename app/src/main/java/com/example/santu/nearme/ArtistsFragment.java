@@ -162,9 +162,9 @@ public class ArtistsFragment extends ListFragment {
                          * */
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), artistsList,
-                                R.layout.artist_row, new String[]{TAG_ARTISTA,
+                                R.layout.artist_row, new String[]{
                                 TAG_NOME, TAG_MAIL,TAG_TELEFONO, TAG_GENERE },
-                                new int[]{R.id.id_group, R.id.group_name, R.id.email_group,
+                                new int[]{ R.id.group_name, R.id.email_group,
                                         R.id.phone, R.id.type_music, });
                         // updating listview
                         setListAdapter(adapter);

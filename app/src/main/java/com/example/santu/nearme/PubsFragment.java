@@ -170,17 +170,6 @@ public class PubsFragment extends ListFragment {
                     public void run() {
                         /**
                          * Updating parsed JSON data into ListView
-                         private static final String TAG_SUCCESS = "success";
-                         private static final String TAG_PUBS = "pub";
-                         private static final String TAG_ID = "id_pub";
-                         private static final String TAG_lOCALE = "pub_name";
-                         private static final String TAG_INDIRIZZO = "address";
-                         private static final String TAG_CIVICO = "num_civico";
-                         private static final String TAG_CITTA = "city";
-                         private static final String TAG_CAP = "cap";
-                         private static final String TAG_PROVINCIA = "provincia";
-                         private static final String TAG_TELEFONO = "phone";
-                         private static final String TAG_EMAIL = "email_pub";
                          * */
                         ListAdapter adapter = new SimpleAdapter(
                                 getActivity(), pubsList,
