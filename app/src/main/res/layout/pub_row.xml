@@ -5,31 +5,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:layout_margin="10dp"
     android:layout_centerVertical="true">
     <TextView
         android:id="@+id/pub_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:layout_margin="10dp"/>
+        android:paddingTop="10dp"/>
     <LinearLayout
         android:id="@+id/indirizzo_section"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
         android:layout_below="@id/pub_name">
         <TextView
             android:id="@+id/address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="1" />
         <TextView
             android:id="@+id/num_civico"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="1"/>
     </LinearLayout>
     <LinearLayout
@@ -37,25 +37,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="10dp"
         android:layout_below="@id/indirizzo_section">
         <TextView
             android:id="@+id/city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="2"/>
         <TextView
             android:id="@+id/cap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="1"/>
         <TextView
             android:id="@+id/provincia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:paddingTop="10dp"
             android:layout_weight="1"/>
     </LinearLayout>
     <TextView
@@ -63,13 +62,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/indirizzo_details"
-        android:layout_margin="10dp"
-        android:padding="10dp"/>
+        android:paddingTop="10dp"/>
     <TextView
         android:id="@+id/email_pub"
         android:layout_width="match_parent"
-        android:layout_margin="10dp"
-        android:padding="10dp"
+        android:paddingTop="10dp"
+        android:layout_marginBottom="10dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/phone"/>
 

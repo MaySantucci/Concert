@@ -78,6 +78,7 @@ public class JSONParser {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 sb.append(line + "\n");
+                Log.e("log: ", line);
             }
             is.close();
             json = sb.toString();

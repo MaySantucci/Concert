@@ -40,8 +40,10 @@ public class PubsFragment extends ListFragment {
     ArrayList<HashMap<String, String>> pubsList;
 
 
-    // url to get all products list
-    private static String url_all_pubs = "http://192.168.43.67/api.toponconcert.info/get_all_pubs.php";
+    // url to get all pubs list
+    //private static String url_all_pubs = "http://192.168.43.67/api.toponconcert.info/get_all_pubs.php";
+
+    private static String url_all_pubs="http://192.168.0.100/api.toponconcert.info/get_all_pubs.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -75,13 +77,13 @@ public class PubsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         pubsList = new ArrayList<HashMap<String, String>>();
 
-        // Loading products in Background Thread
+        // Loading pubs in Background Thread
         new LoadAllPubs().execute();
     }
 
 
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * Background Async Task to Load all pub by making HTTP Request
      */
     class LoadAllPubs extends AsyncTask<String, String, String> {
 
@@ -94,7 +96,7 @@ public class PubsFragment extends ListFragment {
         }
 
         /**
-         * getting All products from url
+         * getting All pubs from url
          */
         protected String doInBackground(String... args) {
             // Building Parameters
@@ -104,18 +106,18 @@ public class PubsFragment extends ListFragment {
 
 
             // Check your log cat for JSON reponse
-            Log.d("All Products: ", json.toString());
+            Log.d("All pubs: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // products found
-                    // Getting Array of Products
+                    // pubs found
+                    // Getting Array of pubs
                     pubs = json.getJSONArray(TAG_PUBS);
 
-                    // looping through All Products
+                    // looping through All pubs
                     for (int i = 0; i < pubs.length(); i++) {
                         JSONObject c = pubs.getJSONObject(i);
 
@@ -162,8 +164,6 @@ public class PubsFragment extends ListFragment {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
-
             // updating UI from Background Thread
             try {
                 getActivity().runOnUiThread(new Runnable() {

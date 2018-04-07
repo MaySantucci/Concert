@@ -40,8 +40,9 @@ public class EventsFragment extends ListFragment {
     ArrayList<HashMap<String, String>> eventsList;
 
 
-    // url to get all products list
-    private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
+    // url to get all events list
+    //private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
+    private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -72,13 +73,13 @@ public class EventsFragment extends ListFragment {
         super.onActivityCreated(savedInstanceState);
         eventsList = new ArrayList<HashMap<String, String>>();
 
-        // Loading products in Background Thread
+        // Loading events in Background Thread
         new LoadAllEvents().execute();
     }
 
 
     /**
-     * Background Async Task to Load all product by making HTTP Request
+     * Background Async Task to Load all event by making HTTP Request
      */
     class LoadAllEvents extends AsyncTask<String, String, String> {
 
@@ -91,7 +92,7 @@ public class EventsFragment extends ListFragment {
         }
 
         /**
-         * getting All products from url
+         * getting All events from url
          */
         protected String doInBackground(String... args) {
             // Building Parameters
@@ -108,11 +109,11 @@ public class EventsFragment extends ListFragment {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // products found
-                    // Getting Array of Products
+                    // event found
+                    // Getting Array of events
                     events = json.getJSONArray(TAG_EVENTS);
 
-                    // looping through All Products
+                    // looping through All events
                     for (int i = 0; i < events.length(); i++) {
                         JSONObject c = events.getJSONObject(i);
 
@@ -153,7 +154,7 @@ public class EventsFragment extends ListFragment {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
+            // dismiss the dialog after getting all events
 
             // updating UI from Background Thread
             try {

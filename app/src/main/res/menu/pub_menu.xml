@@ -14,11 +14,16 @@
 
     </group>
 
-    <group android:id="@+id/logout"
+    <group android:id="@+id/my_events"
         android:checkableBehavior="single">
         <item
-            android:id="@+id/log_out"
-            android:title="@string/log_out"
+            android:id="@+id/add_event"
+            android:title="Aggiungi evento"
+            android:onClick="OnMenuItemClickListener" />
+        <item
+            android:id="@+id/all_my_events"
+            android:title="I miei eventi"
             android:onClick="OnMenuItemClickListener" />
     </group>
+
 </menu>

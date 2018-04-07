@@ -38,8 +38,9 @@ public class AddPubActivity extends DrawerMenuActivity {
     EditText inputEmail;
     TextView testo;
 
-    // url to create new product
-    private static String url_create_product = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
+    // url to create new pub
+    //private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
+    private static String url_create_pub = "http://192.168.0.100/api.toponconcert.info/create_pub.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -71,7 +72,7 @@ public class AddPubActivity extends DrawerMenuActivity {
 
             @Override
             public void onClick(View view) {
-                // creating new product in background thread
+                // creating new pub in background thread
                 new CreateNewPub().execute();
             }
         });
@@ -87,7 +88,7 @@ public class AddPubActivity extends DrawerMenuActivity {
     }
 
     /**
-     * Background Async Task to Create new product
+     * Background Async Task to Create new pub
      * */
     class CreateNewPub extends AsyncTask<String, String, String> {
 
@@ -100,7 +101,7 @@ public class AddPubActivity extends DrawerMenuActivity {
         }
 
         /**
-         * Creating product
+         * Creating pub
          * */
         protected String doInBackground(String... args) {
             String name = inputName.getText().toString();
@@ -125,33 +126,29 @@ public class AddPubActivity extends DrawerMenuActivity {
             params.add(new BasicNameValuePair("email_pub", email));
 
             // getting JSON Object
-            // Note that create product url accepts POST method
-            JSONObject json = jsonParser.makeHttpRequest(url_create_product,
-                    "POST", params);
+            // Note that create pub url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url_create_pub,"POST", params);
 
             // check log cat fro response
-            Log.d("Create Response", json.toString());
+            Log.d("Add Pub Activity", json.toString());
 
             // check for success tag
             try {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // successfully created product
-                    testo = findViewById(R.id.testo);
-                    testo.setText("Pub aggiunto con successo");
+                    // successfully created pub
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+
                     // closing this screen
                     finish();
                 } else {
-                    // failed to create product
-
-                    testo = findViewById(R.id.testo);
-                    testo.setText("Pub non aggiunto");
+                    // failed to create pub
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 

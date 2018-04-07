@@ -13,20 +13,4 @@
                     android:onClick="OnMenuItemClickListener" />
 
     </group>
-    <group android:id="@+id/account"
-        android:checkableBehavior="single">
-
-            <item
-                android:id="@+id/add_member"
-                android:title="Aggiungi membro"
-                android:onClick="OnMenuItemClickListener"/>
-
-</group>
-    <group android:id="@+id/logout"
-        android:checkableBehavior="single">
-        <item
-            android:id="@+id/log_out"
-            android:title="@string/log_out"
-            android:onClick="OnMenuItemClickListener" />
-    </group>
 </menu>
