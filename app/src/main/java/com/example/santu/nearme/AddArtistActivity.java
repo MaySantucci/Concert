@@ -33,7 +33,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
     EditText inputTypeMusic;
 
     // url to create new pub
-    //private static String url_create_artist = "http://192.168.43.67/api.toponconcert.info/create_artist.php";
+    //private static String url_create_group = "http://192.168.43.67/api.toponconcert.info/create_artist.php";
     private static String url_create_group="http://192.168.0.100/api.toponconcert.info/create_group.php";
 
     // JSON Node names

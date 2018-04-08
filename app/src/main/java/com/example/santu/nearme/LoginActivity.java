@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
         import android.app.ProgressDialog;
+        import android.os.AsyncTask;
         import android.os.Bundle;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
@@ -11,6 +12,14 @@ package com.example.santu.nearme;
         import android.widget.EditText;
         import android.widget.TextView;
         import android.widget.Toast;
+
+        import org.apache.http.NameValuePair;
+        import org.apache.http.message.BasicNameValuePair;
+        import org.json.JSONException;
+        import org.json.JSONObject;
+
+        import java.util.ArrayList;
+        import java.util.List;
 
         import butterknife.ButterKnife;
         import butterknife.InjectView;
@@ -23,6 +32,13 @@ public class LoginActivity extends AppCompatActivity {
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login) Button _loginButton;
     @InjectView(R.id.link_signup) TextView _signupLink;
+
+    JSONParser jsonParser = new JSONParser();
+    private static final String TAG_SUCCESS = "success";
+    private ProgressDialog progressDialog;
+
+    //private static String url_login_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
+    private static String url_login_user="http://192.168.0.100/api.toponconcert.info/get_user.php";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,46 +68,18 @@ public class LoginActivity extends AppCompatActivity {
     public void login() {
         Log.d(TAG, "Login");
 
-        if (!validate()) {
-            onLoginFailed();
-            return;
-        }
 
-        _loginButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this);
+        progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
 
         // TODO: Implement your own authentication logic here.
+        new LoginActivity.LoginUser().execute();
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        onLoginSuccess();
-                        // onLoginFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
 
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_SIGNUP) {
-            if (resultCode == RESULT_OK) {
-
-                // TODO: Implement successful signup logic here
-                // By default we just finish the Activity and log them in automatically
-                this.finish();
-            }
-        }
-    }
 
     @Override
     public void onBackPressed() {
@@ -101,35 +89,79 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        finish();
+        progressDialog.dismiss();
+        Intent i = new Intent (this, MainActivity.class);
+        startActivity(i);
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
-        _loginButton.setEnabled(true);
+        progressDialog.dismiss();
+        Toast.makeText(istance, "This is my Toast message!",
+                Toast.LENGTH_LONG).show();
+        finish();
+        startActivity(getIntent());
     }
 
-    public boolean validate() {
-        boolean valid = true;
 
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
+    class LoginUser extends AsyncTask<String, String, String> {
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
         }
 
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
+        /**
+         * Login user
+         * */
+        protected String doInBackground(String... args) {
+            String email = _emailText.getText().toString();
+            String password = _passwordText.getText().toString();
+
+
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<>();
+            params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("password", password));
+
+            Log.d(TAG, "Login Email: " + email);
+            Log.d(TAG, "Login Password: " + password);
+
+            // getting JSON Object
+            // Note that create user url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url_login_user,"POST", params);
+
+            // check log cat fro response
+            Log.d("Login User", json.toString());
+
+            // check for success tag
+
+            try {
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    // successfully logged user
+                    onLoginSuccess();
+                } else {
+                    //login failed
+                    onLoginFailed();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return null;
         }
 
-        return valid;
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+        }
+
     }
+
 }

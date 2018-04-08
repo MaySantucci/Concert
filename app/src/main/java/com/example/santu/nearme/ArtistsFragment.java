@@ -41,9 +41,9 @@ public class ArtistsFragment extends ListFragment {
 
 
     // url to get all products list
-   // private static String url_all_artists = "http://192.168.43.67/api.toponconcert.info/get_all_artists.php";
-
+    //private static String url_all_artists = "http://192.168.43.67/api.toponconcert.info/get_all_artists.php";
     private static String url_all_artists="http://192.168.0.100/api.toponconcert.info/get_all_artists.php";
+
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ARTISTS = "artist";
@@ -101,7 +101,7 @@ public class ArtistsFragment extends ListFragment {
 
 
             // Check your log cat for JSON reponse
-            Log.d("All Products: ", json.toString());
+            Log.d("All Artists: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
