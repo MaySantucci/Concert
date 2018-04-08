@@ -16,5 +16,6 @@
     <TextView android:id="@android:id/empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="No data"/>
+        android:layout_margin="16dp"
+        android:text="Nessun evento"/>
 </FrameLayout>

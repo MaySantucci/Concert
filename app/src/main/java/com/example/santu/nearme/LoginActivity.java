@@ -71,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage("Autenticazione...");
         progressDialog.show();
 
 
@@ -98,6 +98,12 @@ public class LoginActivity extends AppCompatActivity {
 
         progressDialog.dismiss();
         finish();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, "Credenziali non valide.", Toast.LENGTH_LONG).show();
+            }
+        });
         startActivity(getIntent());
     }
 
