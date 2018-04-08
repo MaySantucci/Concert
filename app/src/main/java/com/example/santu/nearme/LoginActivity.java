@@ -97,8 +97,6 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginFailed() {
 
         progressDialog.dismiss();
-        Toast.makeText(istance, "This is my Toast message!",
-                Toast.LENGTH_LONG).show();
         finish();
         startActivity(getIntent());
     }
