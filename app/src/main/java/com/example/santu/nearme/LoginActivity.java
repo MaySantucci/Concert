@@ -15,10 +15,12 @@ package com.example.santu.nearme;
 
         import org.apache.http.NameValuePair;
         import org.apache.http.message.BasicNameValuePair;
+        import org.json.JSONArray;
         import org.json.JSONException;
         import org.json.JSONObject;
 
         import java.util.ArrayList;
+        import java.util.HashMap;
         import java.util.List;
 
         import butterknife.ButterKnife;
@@ -35,10 +37,25 @@ public class LoginActivity extends AppCompatActivity {
 
     JSONParser jsonParser = new JSONParser();
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_USER = "user";
+    private static final String TAG_EMAIL = "email";
+    private static final String TAG_NOME = "name";
+    private static final String TAG_COGNOME = "surname";
+
+
+    String nome;
+    String cognome;
+    String email;
+    String password;
+
+    // events JSONArray
+    JSONArray user = null;
     private ProgressDialog progressDialog;
 
-    private static String url_login_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
-    //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/get_user.php";
+    private static String url_login_user="http://192.168.43.67/api.toponconcert.info/login_user.php";
+    //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
+    private static String url_get_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
+    //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
 
     SessionManager session;
 
@@ -95,12 +112,48 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         progressDialog.dismiss();
-        session.createLoginSession("Mario","Rossi", "mariorossi@mail.com");
+        String email = _emailText.getText().toString();
+
+        List<NameValuePair> params = new ArrayList<>();
+        params.add(new BasicNameValuePair("email", email));
+
+        JSONObject json = jsonParser.makeHttpRequest(url_get_user,"POST", params);
+        // Check your log cat for JSON reponse
+        Log.d("User aaaaaaa: ", json.toString());
+        try {
+            // Checking for SUCCESS TAG
+            int success = json.getInt(TAG_SUCCESS);
+
+            Log.d("Success: ", success + "");
+            if (success == 1) {
+                // event found
+                // Getting Array of events
+                user = json.getJSONArray(TAG_USER);
+
+                Log.d(TAG, "User mail session: " + user);
+
+                // looping through All events
+                for (int i = 0; i < user.length(); i++) {
+                    JSONObject c = user.getJSONObject(i);
+
+                    // Storing each json item in variable
+                    nome = c.getString(TAG_NOME);
+                    cognome = c.getString(TAG_COGNOME);
+                    email = c.getString(TAG_EMAIL);
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        session.createLoginSession(nome, cognome, email);
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(LoginActivity.this, "Mario Rossi.", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, nome + " " + cognome, Toast.LENGTH_LONG).show();
             }
         });
 
