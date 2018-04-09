@@ -34,8 +34,8 @@ public class SignupActivity extends AppCompatActivity {
     @InjectView(R.id.btn_signup) Button _signupButton;
     @InjectView(R.id.link_login) TextView _loginLink;
 
-    //private static String url_create_user="http://192.168.43.67/api.toponconcert.info/create_user.php";
-    private static String url_create_user="http://192.168.0.100/api.toponconcert.info/create_user.php";
+    private static String url_create_user="http://192.168.43.67/api.toponconcert.info/create_user.php";
+    //private static String url_create_user="http://192.168.0.100/api.toponconcert.info/create_user.php";
 
     private static final String TAG_SUCCESS = "success";
 
@@ -105,10 +105,18 @@ public class SignupActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(i);
 
-                    // closing this screen
-                    finish();
                 } else {
-                    // failed to create pub
+                    // failed to create user
+
+                    Log.d("Sono qui", json.toString());
+                    finish();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(SignupActivity.this, "Utente già esistente.", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    startActivity(getIntent());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

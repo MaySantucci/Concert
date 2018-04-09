@@ -37,8 +37,8 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG_SUCCESS = "success";
     private ProgressDialog progressDialog;
 
-    //private static String url_login_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
-    private static String url_login_user="http://192.168.0.100/api.toponconcert.info/get_user.php";
+    private static String url_login_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
+    //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/get_user.php";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

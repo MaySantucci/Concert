@@ -39,8 +39,8 @@ public class AddPubActivity extends DrawerMenuActivity {
     TextView testo;
 
     // url to create new pub
-    //private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
-    private static String url_create_pub = "http://192.168.0.100/api.toponconcert.info/create_pub.php";
+    private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
+    //private static String url_create_pub = "http://192.168.0.100/api.toponconcert.info/create_pub.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";

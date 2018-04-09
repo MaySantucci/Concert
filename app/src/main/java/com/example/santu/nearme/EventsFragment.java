@@ -41,8 +41,8 @@ public class EventsFragment extends ListFragment {
 
 
     // url to get all events list
-    //private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
-    private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
+    private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
+    //private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
