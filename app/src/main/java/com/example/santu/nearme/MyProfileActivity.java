@@ -14,10 +14,14 @@ import android.widget.FrameLayout;
 public class MyProfileActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
+    SessionManager session;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_profile);
+
+        session = new SessionManager(getApplicationContext());
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -53,7 +57,7 @@ public class MyProfileActivity extends DrawerMenuActivity {
             case R.id.add_pub:
                 //TODO go to NEW PUB
             case R.id.log_out:
-                //TODO: go to LOGIN ACTIVITY
+                session.logoutUser();
         }
     }
 }

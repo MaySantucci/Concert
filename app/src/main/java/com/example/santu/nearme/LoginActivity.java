@@ -40,11 +40,16 @@ public class LoginActivity extends AppCompatActivity {
     private static String url_login_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
     //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/get_user.php";
 
+    SessionManager session;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
+
+        // Session Manager
+        session = new SessionManager(getApplicationContext());
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -90,6 +95,15 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         progressDialog.dismiss();
+        session.createLoginSession("Mario","Rossi", "mariorossi@mail.com");
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(LoginActivity.this, "Mario Rossi.", Toast.LENGTH_LONG).show();
+            }
+        });
+
         Intent i = new Intent (this, MainActivity.class);
         startActivity(i);
     }
