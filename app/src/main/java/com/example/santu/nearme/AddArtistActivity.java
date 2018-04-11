@@ -22,15 +22,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 public class AddArtistActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
 
     JSONParser jsonParser = new JSONParser();
-    EditText inputName;
-    EditText inputPhone;
-    EditText inputEmail;
-    EditText inputTypeMusic;
+
+    @InjectView(R.id.group_name) EditText _groupNameText;
+    @InjectView(R.id.phone) EditText _phoneText;
+    @InjectView(R.id.email_group) EditText _emailText;
+    @InjectView(R.id.type_music) EditText _typeMusicText;
+    @InjectView(R.id.create_artist) Button _addArtist;
 
     // url to create new pub
     private static String url_create_group = "http://192.168.43.67/api.toponconcert.info/create_artist.php";
@@ -42,6 +47,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_artist);
+        ButterKnife.inject(this);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -49,20 +55,10 @@ public class AddArtistActivity extends DrawerMenuActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_back);
-        // Edit Text
-        inputName = findViewById(R.id.group_name);
-        inputPhone = findViewById(R.id.phone);
-        inputEmail = findViewById(R.id.email_group);
-        inputTypeMusic = findViewById(R.id.type_music);
 
-        // Create button
-        Button btnCreateArtist = findViewById(R.id.createArtist);
-        // button click event
-        btnCreateArtist.setOnClickListener(new View.OnClickListener() {
-
+        _addArtist.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                // creating new pub in background thread
+            public void onClick(View v) {
                 new AddArtistActivity.CreateNewArtist().execute();
             }
         });
@@ -94,10 +90,10 @@ public class AddArtistActivity extends DrawerMenuActivity {
          * Creating pub
          * */
         protected String doInBackground(String... args) {
-            String name = inputName.getText().toString();
-            String phone = inputPhone.getText().toString();
-            String email = inputEmail.getText().toString();
-            String typeMusic = inputTypeMusic.getText().toString();
+            String name = _groupNameText.getText().toString();
+            String phone = _phoneText.getText().toString();
+            String email = _emailText.getText().toString();
+            String typeMusic = _typeMusicText.getText().toString();
 
 
             // Building Parameters

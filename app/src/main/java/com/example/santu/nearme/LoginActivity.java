@@ -51,10 +51,9 @@ public class LoginActivity extends AppCompatActivity {
     // events JSONArray
     JSONArray user = null;
     private ProgressDialog progressDialog;
-
-    private static String url_login_user="http://192.168.43.67/api.toponconcert.info/login_user.php";
+private static String url_login_user="http://192.168.43.67/api.toponconcert.info/login_user.php";
     //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
-    private static String url_get_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
+   private static String url_get_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
     //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
 
     SessionManager session;
@@ -112,14 +111,14 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
         progressDialog.dismiss();
-        String email = _emailText.getText().toString();
+        email = _emailText.getText().toString();
 
         List<NameValuePair> params = new ArrayList<>();
         params.add(new BasicNameValuePair("email", email));
 
         JSONObject json = jsonParser.makeHttpRequest(url_get_user,"POST", params);
         // Check your log cat for JSON reponse
-        Log.d("User aaaaaaa: ", json.toString());
+        Log.d("User: ", json.toString());
         try {
             // Checking for SUCCESS TAG
             int success = json.getInt(TAG_SUCCESS);
@@ -148,14 +147,14 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
-        session.createLoginSession(nome, cognome, email);
+        session.createLoginSession(this.nome, this.cognome, this.email);
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(LoginActivity.this, nome + " " + cognome, Toast.LENGTH_LONG).show();
-            }
-        });
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(LoginActivity.this, nome + " " + cognome, Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         Intent i = new Intent (this, MainActivity.class);
         startActivity(i);

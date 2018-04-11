@@ -21,12 +21,12 @@ public class SessionManager {
     Context _context;
 
     //Variables that I want store
-    private static final String USER_NAME = "name";
-    private static final String USER_SURNAME = "surname";
-    private static final String USER_EMAIL = "email";
+    public static final String USER_NAME = "name";
+    public static final String USER_SURNAME = "surname";
+    public static final String USER_EMAIL = "email";
 
-    private static final String PREF_NAME = "UserPref";
-    private static final String IS_LOGIN = "IsLoggedIn";
+    public static final String PREF_NAME = "UserPref";
+    public static final String IS_LOGIN = "IsLoggedIn";
 
     //Costruttore
     SessionManager(Context context){
@@ -42,7 +42,7 @@ public class SessionManager {
         editor.putString(USER_NAME, name);
 
         // Storing name in pref
-        editor.putString(USER_SURNAME, name);
+        editor.putString(USER_SURNAME, surname);
 
         // Storing email in pref
         editor.putString(USER_EMAIL, email);
@@ -53,11 +53,10 @@ public class SessionManager {
 
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
-        // user name
-        user.put(USER_NAME, UserPreferences.getString(USER_NAME, null));
 
-        // user email id
         user.put(USER_EMAIL, UserPreferences.getString(USER_EMAIL, null));
+        user.put(USER_NAME, UserPreferences.getString(USER_NAME, null));
+        user.put(USER_SURNAME, UserPreferences.getString(USER_SURNAME, null));
 
         // return user
         return user;

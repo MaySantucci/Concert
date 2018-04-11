@@ -3,10 +3,22 @@ package com.example.santu.nearme;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import java.util.HashMap;
+
 public class MainActivity extends DrawerMenuActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+/*    public TextView userDetails;
+
+    SessionManager session;
+    String name;
+    String surname;
+    String email;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,6 +26,23 @@ public class MainActivity extends DrawerMenuActivity {
         setContentView(R.layout.activity_main);
         viewPager = findViewById(R.id.viewpager);
 
+       /*session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+
+        HashMap<String,String> dataUser = session.getUserDetails();
+         name = dataUser.get(SessionManager.USER_NAME);
+         surname = dataUser.get(SessionManager.USER_SURNAME);
+         email = dataUser.get(SessionManager.USER_EMAIL);
+
+         userDetails = findViewById(R.id.user_credentials);
+         Log.d("user name: ", name);
+        //userDetails.append(name);*/
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MainActivity.this, name + " " + surname, Toast.LENGTH_LONG).show();
+            }
+        });
 
         // Create an adapter that knows which fragment should be shown on each page
         PagerAdapter adapter = new PagerAdapter(this, getSupportFragmentManager());

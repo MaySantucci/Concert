@@ -10,9 +10,16 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ListAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class DrawerMenuActivity extends AppCompatActivity {
 
@@ -20,14 +27,33 @@ public class DrawerMenuActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    SessionManager session;
+    String name, surname, email;
+
+    private TextView userDetails;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_menu);
 
 
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+
+        HashMap<String,String> dataUser = session.getUserDetails();
+        name = dataUser.get(SessionManager.USER_NAME);
+        surname = dataUser.get(SessionManager.USER_SURNAME);
+        email = dataUser.get(SessionManager.USER_EMAIL);
+
+
+
         mDrawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view_drawer);
+
+        View headerView = navigationView.getHeaderView(0);
+        userDetails = headerView.findViewById(R.id.user_credentials);
+        userDetails.setText(name + " " + surname + "\n" + email);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

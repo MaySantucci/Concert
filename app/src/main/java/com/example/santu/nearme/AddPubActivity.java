@@ -23,6 +23,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+
 public class AddPubActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;

@@ -7,17 +7,11 @@ android:padding="16dp"
 android:theme="@style/ThemeOverlay.AppCompat.Dark"
 android:gravity="bottom">
 
-    <ImageView
-        android:id="@+id/my_photo"
-        android:src="@drawable/ic_launcher_background"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/my_photo"
         android:textSize="20dp"
         android:padding="8dp"
         android:text="Nome"
@@ -34,12 +28,11 @@ android:gravity="bottom">
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
     <TextView
-        android:id="@+id/mail"
+        android:id="@+id/email_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:layout_below="@id/name"
-        android:layout_toRightOf="@id/my_photo"
         android:text="email@example.com"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>
 
