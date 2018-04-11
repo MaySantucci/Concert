@@ -6,22 +6,28 @@
             android:title="@string/my_profile"
             android:onClick="OnMenuItemClickListener"/>
         <item
-            android:id="@+id/my_group"
-            android:title="@string/my_group"
-            android:onClick="OnMenuItemClickListener" />
-        <item
             android:id="@+id/add_group"
             android:title="@string/add_group"
             android:onClick="OnMenuItemClickListener" />
-
-        <item
-            android:id="@+id/my_pub"
-            android:title="@string/my_pub"
-            android:onClick="OnMenuItemClickListener" />
-
         <item
             android:id="@+id/add_pub"
             android:title="@string/add_pub"
             android:onClick="OnMenuItemClickListener" />
     </group>
+
+    <!--<ListView android:id="@android:id/list_artist"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:drawSelectorOnTop="false">-->
+    <!--</ListView>-->
+
+
+    <!--<ListView android:id="@android:id/list_pub"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:drawSelectorOnTop="false">-->
+    <!--</ListView>-->
+
 </menu>

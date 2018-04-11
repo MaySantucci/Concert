@@ -1,9 +1,12 @@
 package com.example.santu.nearme;
 
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,13 +15,12 @@ import java.util.HashMap;
 public class MainActivity extends DrawerMenuActivity {
 
     private TabLayout tabLayout;
+    DrawerLayout mDrawerLayout;
     private ViewPager viewPager;
-/*    public TextView userDetails;
-
     SessionManager session;
-    String name;
-    String surname;
-    String email;*/
+    String name, surname, email;
+
+    private TextView _name, _surname, _email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,17 +28,26 @@ public class MainActivity extends DrawerMenuActivity {
         setContentView(R.layout.activity_main);
         viewPager = findViewById(R.id.viewpager);
 
-       /*session = new SessionManager(getApplicationContext());
+
+        session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
         HashMap<String,String> dataUser = session.getUserDetails();
-         name = dataUser.get(SessionManager.USER_NAME);
-         surname = dataUser.get(SessionManager.USER_SURNAME);
-         email = dataUser.get(SessionManager.USER_EMAIL);
+        name = dataUser.get(SessionManager.USER_NAME);
+        surname = dataUser.get(SessionManager.USER_SURNAME);
+        email = dataUser.get(SessionManager.USER_EMAIL);
 
-         userDetails = findViewById(R.id.user_credentials);
-         Log.d("user name: ", name);
-        //userDetails.append(name);*/
+        mDrawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = findViewById(R.id.nav_view_drawer);
+
+        View headerView = navigationView.getHeaderView(0);
+        _name = headerView.findViewById(R.id.name);
+        _surname = headerView.findViewById(R.id.surname);
+        _email = headerView.findViewById(R.id.email);
+        _name.setText(name);
+        _surname.setText(surname);
+        _email.setText(email);
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
