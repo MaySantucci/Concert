@@ -24,6 +24,8 @@ public class SessionManager {
     public static final String USER_NAME = "name";
     public static final String USER_SURNAME = "surname";
     public static final String USER_EMAIL = "email";
+    public static final String USER_PUB = "id_pub";
+    public static final String USER_GROUP = "id_group";
 
     public static final String PREF_NAME = "UserPref";
     public static final String IS_LOGIN = "IsLoggedIn";
@@ -35,21 +37,19 @@ public class SessionManager {
         editor = UserPreferences.edit();
     }
 
-    public void createLoginSession(String name, String surname, String email){// Storing login value as TRUE
+    public void createLoginSession(String name, String surname, String email, String id_pub, String id_group){// Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
-        // Storing name in pref
         editor.putString(USER_NAME, name);
-
-        // Storing name in pref
         editor.putString(USER_SURNAME, surname);
-
-        // Storing email in pref
         editor.putString(USER_EMAIL, email);
+        editor.putString(USER_PUB, id_pub);
+        editor.putString(USER_GROUP, id_group);
 
         // commit changes
         editor.commit();
     }
+
 
     public HashMap<String, String> getUserDetails(){
         HashMap<String, String> user = new HashMap<String, String>();
@@ -57,6 +57,8 @@ public class SessionManager {
         user.put(USER_EMAIL, UserPreferences.getString(USER_EMAIL, null));
         user.put(USER_NAME, UserPreferences.getString(USER_NAME, null));
         user.put(USER_SURNAME, UserPreferences.getString(USER_SURNAME, null));
+        user.put(USER_PUB, UserPreferences.getString(USER_PUB, null));
+        user.put(USER_GROUP, UserPreferences.getString(USER_GROUP, null));
 
         // return user
         return user;

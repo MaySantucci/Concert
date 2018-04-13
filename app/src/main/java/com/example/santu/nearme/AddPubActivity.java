@@ -33,18 +33,22 @@ public class AddPubActivity extends DrawerMenuActivity {
     private Toolbar toolbar;
 
     JSONParser jsonParser = new JSONParser();
-    EditText inputName;
-    EditText inputAddress;
-    EditText inputCivico;
-    EditText inputCity;
-    EditText inputCap;
-    EditText inputProvincia;
-    EditText inputPhone;
-    EditText inputEmail;
     TextView testo;
 
+
+    @InjectView(R.id.pub_name) EditText _pubNameText;
+    @InjectView(R.id.address) EditText _addressText;
+    @InjectView(R.id.num_civico) EditText _civicoText;
+    @InjectView(R.id.city) EditText _cityText;
+    @InjectView(R.id.cap) EditText _capText;
+    @InjectView(R.id.provincia) EditText _provinciaText;
+    @InjectView(R.id.phone) EditText _phoneText;
+    @InjectView(R.id.email_pub) EditText _emailText;
+    @InjectView(R.id.create_pub) Button _addPub;
+
     // url to create new pub
-    private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
+    private static String url_create_pub = "http://toponconcert.altervista.org/api.toponconcert.info/create_pub.php";
+    //private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
     //private static String url_create_pub = "http://192.168.0.100/api.toponconcert.info/create_pub.php";
 
     // JSON Node names
@@ -53,6 +57,7 @@ public class AddPubActivity extends DrawerMenuActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pub);
+        ButterKnife.inject(this);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,20 +65,9 @@ public class AddPubActivity extends DrawerMenuActivity {
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_back);
-        // Edit Text
-        inputName = findViewById(R.id.pub_name);
-        inputAddress = findViewById(R.id.address);
-        inputCivico = findViewById(R.id.num_civico);
-        inputCity = findViewById(R.id.city);
-        inputCap = findViewById(R.id.cap);
-        inputProvincia = findViewById(R.id.provincia);
-        inputPhone = findViewById(R.id.phone);
-        inputEmail = findViewById(R.id.email_pub);
 
-        // Create button
-        Button btnCreatePub = findViewById(R.id.confirm);
         // button click event
-        btnCreatePub.setOnClickListener(new View.OnClickListener() {
+        _addPub.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -109,14 +103,15 @@ public class AddPubActivity extends DrawerMenuActivity {
          * Creating pub
          * */
         protected String doInBackground(String... args) {
-            String name = inputName.getText().toString();
-            String address = inputAddress.getText().toString();
-            String civico = inputCivico.getText().toString();
-            String city = inputCity.getText().toString();
-            String cap = inputCap.getText().toString();
-            String provincia = inputProvincia.getText().toString();
-            String phone = inputPhone.getText().toString();
-            String email = inputEmail.getText().toString();
+
+            String name = _pubNameText.getText().toString();
+            String address = _addressText.getText().toString();
+            String civico = _civicoText.getText().toString();
+            String city = _cityText.getText().toString();
+            String cap = _capText.getText().toString();
+            String provincia = _provinciaText.getText().toString();
+            String phone = _phoneText.getText().toString();
+            String email = _emailText.getText().toString();
 
 
             // Building Parameters

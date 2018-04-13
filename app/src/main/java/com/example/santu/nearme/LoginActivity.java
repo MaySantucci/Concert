@@ -51,9 +51,11 @@ public class LoginActivity extends AppCompatActivity {
     // events JSONArray
     JSONArray user = null;
     private ProgressDialog progressDialog;
-private static String url_login_user="http://192.168.43.67/api.toponconcert.info/login_user.php";
+    private static String url_login_user="http://toponconcert.altervista.org/api.toponconcert.info/login_user.php";
+//    private static String url_login_user="http://192.168.43.67/api.toponconcert.info/login_user.php";
     //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
-   private static String url_get_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
+    private static String url_get_user="http://toponconcert.altervista.org/api.toponconcert.info/get_user.php";
+//    private static String url_get_user="http://192.168.43.67/api.toponconcert.info/get_user.php";
     //private static String url_login_user="http://192.168.0.100/api.toponconcert.info/login_user.php";
 
     SessionManager session;
@@ -147,7 +149,7 @@ private static String url_login_user="http://192.168.43.67/api.toponconcert.info
         } catch (Exception e){
             e.printStackTrace();
         }
-        session.createLoginSession(this.nome, this.cognome, this.email);
+        session.createLoginSession(this.nome, this.cognome, this.email, null, null );
 
 //        runOnUiThread(new Runnable() {
 //            @Override

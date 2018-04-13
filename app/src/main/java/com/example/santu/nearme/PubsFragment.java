@@ -41,7 +41,8 @@ public class PubsFragment extends ListFragment {
 
 
     // url to get all pubs list
-     private static String url_all_pubs = "http://192.168.43.67/api.toponconcert.info/get_all_pubs.php";
+    private static String url_all_pubs = "http://toponconcert.altervista.org/api.toponconcert.info/get_all_pubs.php";
+//    private static String url_all_pubs = "http://192.168.43.67/api.toponconcert.info/get_all_pubs.php";
     //private static String url_all_pubs="http://192.168.0.100/api.toponconcert.info/get_all_pubs.php";
 
     // JSON Node names

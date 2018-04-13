@@ -19,6 +19,10 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +42,8 @@ public class AddArtistActivity extends DrawerMenuActivity {
     @InjectView(R.id.create_artist) Button _addArtist;
 
     // url to create new pub
-    private static String url_create_group = "http://192.168.43.67/api.toponconcert.info/create_artist.php";
+    private static String url_create_group = "http://toponconcert.altervista.org/api.toponconcert.info/create_artist.php";
+    //private static String url_create_group="http://192.168.43.67/api.toponconcert.info/create_group.php";
     //private static String url_create_group="http://192.168.0.100/api.toponconcert.info/create_group.php";
 
     // JSON Node names
@@ -48,6 +53,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_artist);
         ButterKnife.inject(this);
+
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -118,7 +124,6 @@ public class AddArtistActivity extends DrawerMenuActivity {
                     // successfully created pub
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
-
                     // closing this screen
                     finish();
                 } else {
