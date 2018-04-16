@@ -95,6 +95,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog = new ProgressDialog(LoginActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Autenticazione...");
+        progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
 

@@ -42,7 +42,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
     @InjectView(R.id.create_artist) Button _addArtist;
 
     // url to create new pub
-    private static String url_create_group = "http://toponconcert.altervista.org/api.toponconcert.info/create_artist.php";
+    private static String url_create_group = "http://toponconcert.altervista.org/api.toponconcert.info/create_group.php";
     //private static String url_create_group="http://192.168.43.67/api.toponconcert.info/create_group.php";
     //private static String url_create_group="http://192.168.0.100/api.toponconcert.info/create_group.php";
 
@@ -122,6 +122,10 @@ public class AddArtistActivity extends DrawerMenuActivity {
 
                 if (success == 1) {
                     // successfully created pub
+                    //TODO:UPDATE USER id_artist AND session
+
+                    //JSONObject json_update = jsonParser.makeHttpRequest(url_update_user,"POST", params);
+
                     Intent i = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(i);
                     // closing this screen
