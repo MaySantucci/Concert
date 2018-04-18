@@ -31,6 +31,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatException;
 import java.util.List;
 import java.util.Locale;
 import android.location.Geocoder;
@@ -53,17 +54,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG_CAP = "cap";
     private static final String TAG_PROVINCIA = "provincia";
 
-    List<Address> addressList = null;
-    ArrayList<Marker> markersArray;
 
-    Address a;
     JSONArray address_pub = null;
-    double lat, lon;
 
     Geocoder geocoder;
     String nome_pub;
-    private MarkerOptions options;
+    String full_addrress = "";
+
     private ArrayList<LatLng> latlngs;
+    ArrayList<List<Address>> addressList = null;
+    List<String> addresses = null;
+
+    double lat;
+    double lon;
 
     private static String url_all_addresses= "http://toponconcert.altervista.org/api.toponconcert.info/get_all_pubs.php";
 
@@ -77,43 +80,31 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         SupportMapFragment supportMapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
         supportMapFragment.getMapAsync(this);
-
+        new MapFragment.getCoordinates().execute();
         return rootView;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        options = new MarkerOptions();
-        latlngs = new ArrayList<>();
-
-        new MapFragment.getCoordinates().execute();
-        markersArray = new ArrayList<Marker>();
 
         try {
-            Log.d("Sono nella try.", "");
-                for(int i = 0; i < addressList.size(); i++){
-                    lat = addressList.get(i).getLatitude();
-                    lon = addressList.get(i).getLongitude();Log.d("Coordinate: ", lon + " " + lat);
-                    latlngs.add(new LatLng(lat,lon));
-                    //mMap.addMarker(new MarkerOptions().position(new LatLng(lat,lon)).title(nome_pub));
+            if(latlngs.size() == 0 || latlngs == null){
+                Log.d("Caricamento: ", latlngs.size() + "");
             }
-            for(LatLng point : latlngs){
-                mMap.addMarker(new MarkerOptions().position(point).title(nome_pub));
-                mMap.moveCamera(CameraUpdateFactory.newLatLng(point));
+            else {
+                for (LatLng marker : latlngs){
+                    mMap.addMarker(new MarkerOptions().position(marker).title(nome_pub));
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+                }
             }
 
-        } catch (IllegalArgumentException ex ){
+        } catch (IllegalFormatException e){
+            e.printStackTrace();
+        } catch (Exception ex) {
             ex.printStackTrace();
-            Log.e("IllegalArgument: ", ex.getMessage() + "");
-        } catch (Exception e){
-            Log.e("Exeption: ", e.getStackTrace() + "");
         }
 
-//        // Add a marker in Sydney and move the camera
-//        LatLng sydney = new LatLng(-34, 151);
-//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
     class getCoordinates extends AsyncTask<String, Void, String> {
@@ -123,23 +114,19 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            dialog.setMessage("Caricamento in corso...");
-//            dialog.setCanceledOnTouchOutside(false);
-//            dialog.show();
+           dialog.setMessage("Caricamento in corso...");
+           dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         protected String doInBackground(String... args) {
-
-
             List<NameValuePair> params = new ArrayList<>();
-
             JSONObject json = jsonParser.makeHttpRequest(url_all_addresses,"GET", params);
-
             Log.d("Addresses", json.toString());
-
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
+                addresses = new ArrayList<>();
 
                 if (success == 1) {
                     // pubs found
@@ -158,27 +145,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         String cap = c.getString(TAG_CAP);
                         String provincia = c.getString(TAG_PROVINCIA);
 
-                        Log.d("Il mio array 1: ",  indirizzo + " " + civico );
-                        String full_addrress = indirizzo +" "+ civico + " " + citta + " " + cap;
-
-                        a = new Address(Locale.ITALY);
-                        a.setAddressLine(0, indirizzo + "," + civico);
-                        a.setLocality(citta);
-                        a.setPostalCode(cap);
-                        a.setAdminArea(provincia);
-
-                        geocoder = new Geocoder(getContext(), Locale.ITALY);
-
-                        try {
-                            addressList = geocoder.getFromLocationName(full_addrress, address_pub.length());
-                            Log.d("addressList = ", addressList + "");
-
-                        } catch (Exception ex){
-                            ex.printStackTrace();
-                        }
-
-                        Log.d("Il mio array 2: ", a + "");
+                        full_addrress = indirizzo +" "+ civico + " " + citta + " " + cap ;
+                        Log.d("FULL ADDRESSES: ",  full_addrress );
+                        addresses.add(i, full_addrress);
                     }
+
+                    Log.d("addresses: ",  addresses.toString() );
                 }
 
             } catch (JSONException e) {
@@ -187,13 +159,41 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
 
+
+            geocoder = new Geocoder(getContext(), Locale.ITALY);
+            addressList = new ArrayList<>();
+            try {
+                for (int i = 0; i < addresses.size(); i ++){
+                    addressList.add(i,geocoder.getFromLocationName(addresses.get(i), addresses.size())) ;
+                }
+                Log.d("addressList = ", addressList.toString());
+                Log.d("addressList = ", addressList.size() + "");
+
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+
+            latlngs = new ArrayList<>();
+            try {
+
+                Log.e("size: ", addressList.size() + "");
+                for (int i = 0; i < addressList.size(); i ++){
+                    lat = addressList.get(i).get(0).getLatitude();
+                    lon = addressList.get(i).get(0).getLongitude();
+                    latlngs.add(i, new LatLng(lat,lon));
+                    Log.e("latitudine: ", lat + "");
+                    Log.e("longitudine: ", lon + "");
+                }
+
+            } catch (Exception ex){
+                ex.printStackTrace();
+            }
+
             return null;
         }
 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
         protected void onPostExecute(String file_url) {
+            dialog.dismiss();
         }
 
     }
