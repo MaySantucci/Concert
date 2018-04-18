@@ -64,6 +64,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     private ArrayList<LatLng> latlngs;
     ArrayList<List<Address>> addressList = null;
     List<String> addresses = null;
+    List<String> nomiPub = null;
 
     double lat;
     double lon;
@@ -93,9 +94,11 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 Log.d("Caricamento: ", latlngs.size() + "");
             }
             else {
+                int i = 0;
                 for (LatLng marker : latlngs){
-                    mMap.addMarker(new MarkerOptions().position(marker).title(nome_pub));
+                    mMap.addMarker(new MarkerOptions().position(marker).title(nomiPub.get(i)));
                     mMap.moveCamera(CameraUpdateFactory.newLatLng(marker));
+                    i++;
                 }
             }
 
@@ -127,6 +130,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
                 addresses = new ArrayList<>();
+                nomiPub = new ArrayList<>();
 
                 if (success == 1) {
                     // pubs found
@@ -148,6 +152,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         full_addrress = indirizzo +" "+ civico + " " + citta + " " + cap ;
                         Log.d("FULL ADDRESSES: ",  full_addrress );
                         addresses.add(i, full_addrress);
+                        nomiPub.add(i, nome_pub);
                     }
 
                     Log.d("addresses: ",  addresses.toString() );
