@@ -37,14 +37,14 @@ public class SessionManager {
         editor = UserPreferences.edit();
     }
 
-    public void createLoginSession(String name, String surname, String email, String id_pub, String id_group){// Storing login value as TRUE
+    public void createLoginSession(String name, String surname, String email,String id_group, String id_pub){// Storing login value as TRUE
         editor.putBoolean(IS_LOGIN, true);
 
         editor.putString(USER_NAME, name);
         editor.putString(USER_SURNAME, surname);
         editor.putString(USER_EMAIL, email);
-        editor.putString(USER_PUB, id_pub);
         editor.putString(USER_GROUP, id_group);
+        editor.putString(USER_PUB, id_pub);
 
         // commit changes
         editor.commit();

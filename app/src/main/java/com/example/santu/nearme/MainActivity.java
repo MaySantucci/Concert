@@ -6,6 +6,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +19,7 @@ public class MainActivity extends DrawerMenuActivity {
     DrawerLayout mDrawerLayout;
     private ViewPager viewPager;
     SessionManager session;
-    String name, surname, email;
+    String name, surname, email, id_group, id_pub;
 
     private TextView _name, _surname, _email;
 
@@ -36,9 +37,14 @@ public class MainActivity extends DrawerMenuActivity {
         name = dataUser.get(SessionManager.USER_NAME);
         surname = dataUser.get(SessionManager.USER_SURNAME);
         email = dataUser.get(SessionManager.USER_EMAIL);
+        id_group = dataUser.get(SessionManager.USER_GROUP);
+        id_pub = dataUser.get(SessionManager.USER_PUB);
+
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_drawer);
+
+        mMenu = navigationView.getMenu();
 
         View headerView = navigationView.getHeaderView(0);
         _name = headerView.findViewById(R.id.name);
@@ -51,7 +57,7 @@ public class MainActivity extends DrawerMenuActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(MainActivity.this, name + " " + surname, Toast.LENGTH_LONG).show();
+                Toast.makeText(MainActivity.this, name + " " + surname + " " + id_group + " " + id_pub, Toast.LENGTH_LONG).show();
             }
         });
 

@@ -41,12 +41,11 @@ public class LoginActivity extends AppCompatActivity {
     private static final String TAG_EMAIL = "email";
     private static final String TAG_NOME = "name";
     private static final String TAG_COGNOME = "surname";
+    private static final String TAG_GROUP = "id_group";
+    private static final String TAG_PUB = "id_pub";
 
 
-    String nome;
-    String cognome;
-    String email;
-    String password;
+    String nome, cognome, email, id_group, id_pub ;
 
     // events JSONArray
     JSONArray user = null;
@@ -142,6 +141,9 @@ public class LoginActivity extends AppCompatActivity {
                     nome = c.getString(TAG_NOME);
                     cognome = c.getString(TAG_COGNOME);
                     email = c.getString(TAG_EMAIL);
+                    id_group = c.getString(TAG_GROUP);
+                    id_pub = c.getString(TAG_PUB);
+
                 }
             }
 
@@ -150,7 +152,7 @@ public class LoginActivity extends AppCompatActivity {
         } catch (Exception e){
             e.printStackTrace();
         }
-        session.createLoginSession(this.nome, this.cognome, this.email, null, null );
+        session.createLoginSession(nome, cognome, email, id_group, id_pub );
 
 //        runOnUiThread(new Runnable() {
 //            @Override

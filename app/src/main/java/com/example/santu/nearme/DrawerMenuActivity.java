@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -27,8 +28,10 @@ public class DrawerMenuActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
+    Menu mMenu;
     SessionManager session;
+
+    String nome, cognome, email, id_group, id_pub;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,40 +118,38 @@ public class DrawerMenuActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void OnMenuItemClickListener(MenuItem item){
-        switch (item.getItemId()){
+    public void OnMenuItemClickListener(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.my_profile:
-                Intent my_profile = new Intent (this, MyProfileActivity.class);
+                Intent my_profile = new Intent(this, MyProfileActivity.class);
                 startActivity(my_profile);
                 mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;
-//            case R.id.my_group:
-//                Intent my_group = new Intent (this, MyGroupActivity.class);
-//                startActivity(my_group);
-//                mDrawerLayout = findViewById(R.id.drawer_layout);
-//                mDrawerLayout.closeDrawers();
-//                break;
+            case R.id.my_group:
+                Intent my_group = new Intent(this, MyGroupActivity.class);
+                startActivity(my_group);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
+                break;
             case R.id.add_group:
-                Intent add_group = new Intent (this, AddArtistActivity.class);
+                Intent add_group = new Intent(this, AddArtistActivity.class);
                 startActivity(add_group);
                 mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;
-//            case R.id.my_pub:
-//                Intent my_pub = new Intent (this, MyPubActivity.class);
-//                startActivity(my_pub);
-//                mDrawerLayout = findViewById(R.id.drawer_layout);
-//                mDrawerLayout.closeDrawers();
-//                break;
+            case R.id.my_pub:
+                Intent my_pub = new Intent(this, MyPubActivity.class);
+                startActivity(my_pub);
+                mDrawerLayout = findViewById(R.id.drawer_layout);
+                mDrawerLayout.closeDrawers();
+                break;
             case R.id.add_pub:
-                Intent add_pub = new Intent (this, AddPubActivity.class);
+                Intent add_pub = new Intent(this, AddPubActivity.class);
                 startActivity(add_pub);
                 mDrawerLayout = findViewById(R.id.drawer_layout);
                 mDrawerLayout.closeDrawers();
                 break;
         }
     }
-
-
 }
