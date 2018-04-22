@@ -45,7 +45,9 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_drawer);
+        mMenu = navigationView.getMenu();
 
+        onPrepareOptionsMenu(mMenu);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -151,5 +153,71 @@ public class DrawerMenuActivity extends AppCompatActivity {
                 mDrawerLayout.closeDrawers();
                 break;
         }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+        menu = mMenu;
+
+        Log.e("size _____", menu.size() + "");
+
+        HashMap<String, String> dataUser = session.getUserDetails();
+        email = dataUser.get(SessionManager.USER_EMAIL);
+        nome = dataUser.get(SessionManager.USER_NAME);
+        cognome = dataUser.get(SessionManager.USER_SURNAME);
+        id_group = dataUser.get(SessionManager.USER_GROUP);
+        id_pub = dataUser.get(SessionManager.USER_PUB);
+
+        if(id_group != "null" && id_pub != "null"){
+
+            Log.d("1 caso ____", id_group + " " + id_pub);
+            menu.findItem(R.id.my_group).setTitle(id_group + "");
+            menu.findItem(R.id.add_group).setVisible(false);
+
+            menu.findItem(R.id.my_pub).setTitle(id_pub + "");
+            menu.findItem(R.id.add_pub).setVisible(false);
+
+        }
+        else if(id_pub == "null" && id_group == "null"){
+
+            Log.d("2 caso ____", id_group + " " + id_pub);
+            menu.findItem(R.id.add_group).setVisible(true);
+            menu.findItem(R.id.my_group).setVisible(false);
+
+            menu.findItem(R.id.my_pub).setVisible(false);
+            menu.findItem(R.id.add_pub).setVisible(true);
+        }
+
+        else if(id_pub != "null" && id_group == "null"){
+
+            Log.d("3 caso ____", id_group + " " + id_pub);
+            menu.findItem(R.id.add_group).setVisible(true);
+            menu.findItem(R.id.my_group).setVisible(false);
+
+
+            menu.findItem(R.id.my_pub).setTitle(id_pub + "");
+            menu.findItem(R.id.my_pub).setVisible(true);
+            menu.findItem(R.id.add_pub).setVisible(false);
+        }
+
+
+        else if(id_pub == "null" && id_group != "null"){
+
+            Log.d("4 caso ____", id_group + " " + id_pub);
+            menu.findItem(R.id.add_group).setVisible(false);
+            menu.findItem(R.id.my_group).setTitle(id_group);
+
+            menu.findItem(R.id.my_pub).setVisible(false);
+            menu.findItem(R.id.add_pub).setVisible(true);
+        }
+
+
+
+        for (int i = 0; i < menu.size(); i ++){
+            Log.e("item _____", menu.getItem(i).toString());
+        }
+
+        return super.onPrepareOptionsMenu(menu);
     }
 }

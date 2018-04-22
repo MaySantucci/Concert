@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -24,6 +25,7 @@ public class MyProfileActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
     SessionManager session;
+    Menu mMenu;
 
     private TextView name, surname;
 
@@ -42,6 +44,7 @@ public class MyProfileActivity extends DrawerMenuActivity {
 
         NavigationView nav = findViewById(R.id.nav_my_profile);
         View header = nav.getHeaderView(0);
+        mMenu = nav.getMenu();
 
         name = header.findViewById(R.id.name);
         surname = header.findViewById(R.id.surname);
@@ -59,7 +62,6 @@ public class MyProfileActivity extends DrawerMenuActivity {
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         ActionBar actionbar = getSupportActionBar();
         actionbar.setDisplayHomeAsUpEnabled(true);
@@ -80,16 +82,22 @@ public class MyProfileActivity extends DrawerMenuActivity {
         switch (item.getItemId()) {
 
             case R.id.change_email:
-                Intent i = new Intent(this,LoginActivity.class);
-                startActivity(i);
+                //TODO change email
+                break;
             case R.id.change_pw:
                 //TODO go to NEW PUB
+                break;
             case R.id.delete_account:
                 //TODO in a popup
+                break;
             case R.id.add_group:
-                //TODO go to NEW GROUP
+                Intent add_group = new Intent (MyProfileActivity.this, AddArtistActivity.class);
+                startActivity(add_group);
+                break;
             case R.id.add_pub:
-                //TODO go to NEW PUB
+                Intent add_pub = new Intent (this, AddPubActivity.class);
+                startActivity(add_pub);
+                break;
             case R.id.log_out:
                 session.logoutUser();
         }

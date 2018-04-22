@@ -36,6 +36,8 @@ import butterknife.InjectView;
 
 import static com.example.santu.nearme.SessionManager.PREF_NAME;
 import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.example.santu.nearme.SessionManager.USER_NAME;
+import static com.google.android.gms.internal.zzbfq.NULL;
 
 public class AddArtistActivity extends DrawerMenuActivity {
 
@@ -156,7 +158,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
                         Log.d("artist_id: ", id_user_artist);
                     }
 
-                    if (id_user_artist == null ){
+                    if (id_user_artist == "null" ){
                         addGroup();
                     } else {
                         //alert: puoi avere al massimo un gruppo!
@@ -282,6 +284,7 @@ public class AddArtistActivity extends DrawerMenuActivity {
 
                 if (success3 == 1) {
                     //TODO aggiorna vista e sessione utente
+                    onPrepareOptionsMenu(mMenu);
 
                     int PRIVATE_MODE = 0;
                     SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -294,11 +297,12 @@ public class AddArtistActivity extends DrawerMenuActivity {
                     nome = dataUser.get(SessionManager.USER_NAME);
                     cognome = dataUser.get(SessionManager.USER_SURNAME);
                     id_user_artist = dataUser.get(SessionManager.USER_GROUP);
+                    id_pub = dataUser.get(SessionManager.USER_PUB);
 
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(AddArtistActivity.this, "Sessione:" + email + " " + nome + " " + id_user_artist, Toast.LENGTH_LONG).show();
+                            Toast.makeText(AddArtistActivity.this, "Sessione:" + email + " " + nome + " " + id_user_artist + " " + id_pub, Toast.LENGTH_LONG).show();
                         }
                     });
 
