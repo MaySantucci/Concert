@@ -68,13 +68,9 @@ public class AddArtistActivity extends DrawerMenuActivity {
     JSONArray artist = null;
     String id_artista;
 
-    String name;
-    String phone;
-    String email_group;
-    String typeMusic;
-    String email;
+    String name, phone, email_group, typeMusic;
 
-    String nome, cognome;
+    String nome, cognome, email;
     String id_user_artist;
 
     @Override

@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -17,15 +18,21 @@ import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import static com.example.santu.nearme.SessionManager.PREF_NAME;
+import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.example.santu.nearme.SessionManager.USER_PUB;
 
 
 public class AddPubActivity extends DrawerMenuActivity {
@@ -47,17 +54,41 @@ public class AddPubActivity extends DrawerMenuActivity {
     @InjectView(R.id.create_pub) Button _addPub;
 
     // url to create new pub
+    private static String url_get_user = "http://toponconcert.altervista.org/api.toponconcert.info/get_user.php";
     private static String url_create_pub = "http://toponconcert.altervista.org/api.toponconcert.info/create_pub.php";
+    private static String url_get_pub="http://toponconcert.altervista.org/api.toponconcert.info/get_pub.php";
+    private static String url_update_user="http://toponconcert.altervista.org/api.toponconcert.info/update_user_pub.php";
     //private static String url_create_pub = "http://192.168.43.67/api.toponconcert.info/create_pub.php";
     //private static String url_create_pub = "http://192.168.0.100/api.toponconcert.info/create_pub.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
+    private static final String TAG_USER = "user";
+    private static final String TAG_PUBS = "pub";
+    private static final String TAG_ID = "id_pub";
+
+    JSONArray pub = null;
+
+    String nome, cognome, email, id_group, id_pub_u;
+
+    String id_pub_p, pub_name, address, num_civico, city, cap, provincia, phone, email_pub;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_pub);
         ButterKnife.inject(this);
+
+
+
+        session = new SessionManager(getApplicationContext());
+        session.checkLogin();
+
+        HashMap<String,String> dataUser = session.getUserDetails();
+        email = dataUser.get(SessionManager.USER_EMAIL);
+        nome = dataUser.get(SessionManager.USER_NAME);
+        cognome = dataUser.get(SessionManager.USER_SURNAME);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,6 +122,7 @@ public class AddPubActivity extends DrawerMenuActivity {
      * */
     class CreateNewPub extends AsyncTask<String, String, String> {
 
+
         /**
          * Before starting background thread Show Progress Dialog
          * */
@@ -104,26 +136,82 @@ public class AddPubActivity extends DrawerMenuActivity {
          * */
         protected String doInBackground(String... args) {
 
-            String name = _pubNameText.getText().toString();
-            String address = _addressText.getText().toString();
-            String civico = _civicoText.getText().toString();
-            String city = _cityText.getText().toString();
-            String cap = _capText.getText().toString();
-            String provincia = _provinciaText.getText().toString();
-            String phone = _phoneText.getText().toString();
-            String email = _emailText.getText().toString();
+            List<NameValuePair> p = new ArrayList<>();
+            p.add(new BasicNameValuePair("email", email));
+
+            // getting JSON Object
+            // Note that create pub url accepts POST method
+            JSONObject json1 = jsonParser.makeHttpRequest(url_get_user,"POST", p);
+
+            try {
+
+                int success1 = json1.getInt(TAG_SUCCESS);
+
+                if(success1 == 1){
+
+                    pub = json1.getJSONArray(TAG_USER);
+
+                    // looping through All Products
+                    for (int i = 0; i < pub.length(); i++) {
+                        JSONObject c = pub.getJSONObject(i);
+
+                        id_pub_u = c.getString(TAG_ID);
+
+                        Log.d("id_pub_u: ", id_pub_u);
+                    }
+
+                    if (id_pub_u == "null" ){
+                        addGroup();
+                    } else {
+                        //alert: puoi avere al massimo un gruppo!
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(AddPubActivity.this, "Hai già un pub!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        finish();
+                    }
+
+
+                }
+
+
+            } catch (JSONException e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once done
+        }
+
+        public void addGroup(){
+            pub_name = _pubNameText.getText().toString();
+            address = _addressText.getText().toString();
+            num_civico = _civicoText.getText().toString();
+            city = _cityText.getText().toString();
+            cap = _capText.getText().toString();
+            provincia = _provinciaText.getText().toString();
+            phone = _phoneText.getText().toString();
+            email_pub = _emailText.getText().toString();
 
 
             // Building Parameters
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("pub_name", name));
+            params.add(new BasicNameValuePair("pub_name", pub_name));
             params.add(new BasicNameValuePair("address", address));
-            params.add(new BasicNameValuePair("num_civico", civico));
+            params.add(new BasicNameValuePair("num_civico", num_civico));
             params.add(new BasicNameValuePair("city", city));
             params.add(new BasicNameValuePair("cap", cap));
             params.add(new BasicNameValuePair("provincia", provincia));
             params.add(new BasicNameValuePair("phone", phone));
-            params.add(new BasicNameValuePair("email_pub", email));
+            params.add(new BasicNameValuePair("email_pub", email_pub));
 
             // getting JSON Object
             // Note that create pub url accepts POST method
@@ -138,26 +226,105 @@ public class AddPubActivity extends DrawerMenuActivity {
 
                 if (success == 1) {
                     // successfully created pub
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(i);
 
-                    // closing this screen
-                    finish();
+                    getIdGroup();
+
                 } else {
                     // failed to create pub
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
         }
 
-        /**
-         * After completing background task Dismiss the progress dialog
-         * **/
-        protected void onPostExecute(String file_url) {
-            // dismiss the dialog once done
+        public void getIdGroup (){
+            List<NameValuePair> param = new ArrayList<>();
+            param.add(new BasicNameValuePair("email_pub", email_pub));
+
+            Log.d("Pub Email: ", param.toString());
+            JSONObject json_id_artist = jsonParser.makeHttpRequest(url_get_pub,"POST", param);
+
+            Log.d("Pub: ", json_id_artist.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success2 = json_id_artist.getInt(TAG_SUCCESS);
+
+                if (success2 == 1) {
+                    // products found
+                    // Getting Array of Products
+                    pub = json_id_artist.getJSONArray(TAG_PUBS);
+
+                    // looping through All Products
+                    for (int i = 0; i < pub.length(); i++) {
+                        JSONObject c = pub.getJSONObject(i);
+
+                        id_pub_p = c.getString(TAG_ID);
+
+                        Log.d("id_pub: ", id_pub_p);
+                    }
+
+                    //TODO: UPDATE USER WITH id_artista
+                    updateUser();
+
+                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(i);
+                    // closing this screen
+                    finish();
+
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+        }
+
+        public void updateUser() {
+
+            List<NameValuePair> param_user= new ArrayList<>();
+            param_user.add(new BasicNameValuePair("email", email));
+            param_user.add(new BasicNameValuePair("id_pub", id_pub_p));
+            JSONObject json_update_user = jsonParser.makeHttpRequest(url_update_user,"POST", param_user);
+            Log.d("Update: ", json_update_user.toString());
+
+            try {
+                int success3 = json_update_user.getInt(TAG_SUCCESS);
+
+                if (success3 == 1) {
+                    //TODO aggiorna vista e sessione utente
+                    onPrepareOptionsMenu(mMenu);
+
+                    int PRIVATE_MODE = 0;
+                    SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString(USER_PUB, id_pub_p);
+                    editor.commit();
+
+                    HashMap<String,String> dataUser = session.getUserDetails();
+                    email = dataUser.get(SessionManager.USER_EMAIL);
+                    nome = dataUser.get(SessionManager.USER_NAME);
+                    cognome = dataUser.get(SessionManager.USER_SURNAME);
+                    id_group = dataUser.get(SessionManager.USER_GROUP);
+                    id_pub_u = dataUser.get(SessionManager.USER_PUB);
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(AddPubActivity.this, "Sessione:" + email + " " + nome + " " + id_group + " " + id_pub_u, Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+                }
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
 
     }
 }
+
+
