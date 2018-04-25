@@ -94,6 +94,17 @@ public class MyPubActivity extends DrawerMenuActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void OnMenuItemClickListener(MenuItem item){
+        switch (item.getItemId()) {
+
+            case R.id.add_event:
+                Intent add_event = new Intent (MyPubActivity.this, AddEventActivity.class);
+                startActivity(add_event);
+                break;
+
+        }
+    }
+
     class GetPub extends AsyncTask<String, String, String> {
 
         /**
