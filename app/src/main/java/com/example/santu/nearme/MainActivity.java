@@ -1,6 +1,8 @@
 package com.example.santu.nearme;
 
+import android.graphics.Color;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -13,7 +15,8 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-public class MainActivity extends DrawerMenuActivity {
+public class MainActivity extends DrawerMenuActivity
+        implements ConnectivityReceiver.ConnectivityReceiverListener{
 
     private TabLayout tabLayout;
     DrawerLayout mDrawerLayout;
@@ -29,6 +32,7 @@ public class MainActivity extends DrawerMenuActivity {
         setContentView(R.layout.activity_main);
         viewPager = findViewById(R.id.viewpager);
 
+        checkConnection();
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
@@ -53,13 +57,13 @@ public class MainActivity extends DrawerMenuActivity {
         _name.setText(name);
         _surname.setText(surname);
         _email.setText(email);
-
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MainActivity.this, name + " " + surname + " " + id_group + " " + id_pub, Toast.LENGTH_LONG).show();
-            }
-        });
+//
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                Toast.makeText(MainActivity.this, name + " " + surname + " " + id_group + " " + id_pub, Toast.LENGTH_LONG).show();
+//            }
+//        });
 
         // Create an adapter that knows which fragment should be shown on each page
         PagerAdapter adapter = new PagerAdapter(this, getSupportFragmentManager());
@@ -113,5 +117,58 @@ public class MainActivity extends DrawerMenuActivity {
         // disable going back to the MainActivity
         moveTaskToBack(true);
     }
+
+
+    //Controllo connessione del dispositivo.
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        if(isConnected){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Connesso", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Connessione assente!", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(MainActivity.this);
+    }
+    /**
+     * Callback will be triggered when there is change in
+     * network connection
+     */
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        if(isConnected){
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Connesso", Toast.LENGTH_LONG).show();
+                }
+            });
+        }else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(MainActivity.this, "Connessione assente!", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+    }
+
 
 }

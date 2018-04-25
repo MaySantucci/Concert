@@ -1,8 +1,10 @@
 package com.example.santu.nearme;
 
         import android.app.ProgressDialog;
+        import android.graphics.Color;
         import android.os.AsyncTask;
         import android.os.Bundle;
+        import android.support.design.widget.Snackbar;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
 
@@ -26,7 +28,8 @@ package com.example.santu.nearme;
         import butterknife.ButterKnife;
         import butterknife.InjectView;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity
+        implements ConnectivityReceiver.ConnectivityReceiverListener {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -85,8 +88,55 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+
+
+        checkConnection();
+
     }
 
+    //Controllo connessione del dispositivo.
+    private void checkConnection() {
+        boolean isConnected = ConnectivityReceiver.isConnected();
+        showSnack(isConnected);
+    }
+
+    private void showSnack(boolean isConnected) {
+        String message;
+        int color;
+        if (isConnected) {
+            message = "Connesso a internet!";
+            color = Color.WHITE;
+        } else {
+            message = "Connessione assente!";
+            color = Color.RED;
+        }
+
+        Snackbar snackbar = Snackbar
+                .make(findViewById(R.id.fab), message, Snackbar.LENGTH_LONG);
+
+        View sbView = snackbar.getView();
+        TextView textView = (TextView) sbView.findViewById(android.support.design.R.id.snackbar_text);
+        textView.setTextColor(color);
+        snackbar.show();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        MyApplication.getInstance().setConnectivityListener(LoginActivity.this);
+    }
+    /**
+     * Callback will be triggered when there is change in
+     * network connection
+     */
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+        showSnack(isConnected);
+    }
+
+
+    //Gestione Login
     public void login() {
         Log.d(TAG, "Login");
 
