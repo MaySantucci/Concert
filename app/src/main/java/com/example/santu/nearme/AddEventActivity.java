@@ -145,7 +145,7 @@ public class AddEventActivity extends DrawerMenuActivity {
 
                 if (success == 1) {
                     // successfully created pub
-                    Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MyEventsActivity.class);
                     startActivity(i);
 
                 } else {
