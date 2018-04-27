@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
@@ -16,11 +17,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DrawerMenuActivity extends AppCompatActivity {
@@ -31,7 +41,34 @@ public class DrawerMenuActivity extends AppCompatActivity {
     Menu mMenu;
     SessionManager session;
 
-    String nome, cognome, email, id_group, id_pub;
+    String nome, cognome, email, id_group, id_pub, nomeGruppo, locale;
+
+    JSONParser jParser = new JSONParser();
+
+    ArrayList<HashMap<String, String>> pubList;
+    ArrayList<HashMap<String, String>> groupList;
+
+    ListAdapter adapter;
+
+    // url to get all events list
+    private static String url_get_pub = "http://toponconcert.altervista.org/api.toponconcert.info/get_pub_by_id.php";
+    private static String url_get_group = "http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
+//    private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
+    //private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
+
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_PUB = "pub";
+    private static final String TAG_ID_PUB = "id_pub";
+    private static final String TAG_lOCALE = "pub_name";
+    private static final String TAG_ARTIST = "group";
+    private static final String TAG_ID_GROUP = "id_group";
+    private static final String TAG_ARTISTA = "group_name";
+
+    // events JSONArray
+    JSONArray pub = null;
+    JSONArray group = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +127,10 @@ public class DrawerMenuActivity extends AppCompatActivity {
                 }
         );
 
+        pubList = new ArrayList<HashMap<String, String>>();
+        groupList = new ArrayList<>();
+        new DrawerMenuActivity.GetPubName().execute();
+        new DrawerMenuActivity.GetGroupName().execute();
     }
 
     @Override
@@ -172,10 +213,10 @@ public class DrawerMenuActivity extends AppCompatActivity {
         if(id_group != "null" && id_pub != "null"){
 
             Log.d("1 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.my_group).setTitle(id_group + "");
+            menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
             menu.findItem(R.id.add_group).setVisible(false);
 
-            menu.findItem(R.id.my_pub).setTitle(id_pub + "");
+            menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
             menu.findItem(R.id.add_pub).setVisible(false);
 
         }
@@ -196,7 +237,7 @@ public class DrawerMenuActivity extends AppCompatActivity {
             menu.findItem(R.id.my_group).setVisible(false);
 
 
-            menu.findItem(R.id.my_pub).setTitle(id_pub + "");
+            menu.findItem(R.id.my_pub).setTitle("Locale: " + locale);
             menu.findItem(R.id.my_pub).setVisible(true);
             menu.findItem(R.id.add_pub).setVisible(false);
         }
@@ -206,7 +247,7 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
             Log.d("4 caso ____", id_group + " " + id_pub);
             menu.findItem(R.id.add_group).setVisible(false);
-            menu.findItem(R.id.my_group).setTitle(id_group);
+            menu.findItem(R.id.my_group).setTitle("Gruppo: " + nomeGruppo);
 
             menu.findItem(R.id.my_pub).setVisible(false);
             menu.findItem(R.id.add_pub).setVisible(true);
@@ -219,5 +260,150 @@ public class DrawerMenuActivity extends AppCompatActivity {
         }
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    class GetPubName extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * getting All events from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_pub", id_pub));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_get_pub, "POST", params);
+
+            Log.d("name_params: ", params.toString());
+
+            // Check your log cat for JSON reponse
+            Log.d("Name_pub: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    // event found
+                    // Getting Array of events
+                    pub = json.getJSONArray(TAG_PUB);
+
+                    Log.d("yeah_nname: ", pub.toString());
+                    // looping through All events
+                    for (int i = 0; i < pub.length(); i++) {
+                        JSONObject c = pub.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id_pub_r = c.getString(TAG_ID_PUB);
+                        locale = c.getString(TAG_lOCALE);
+
+                        // creating new HashMap
+                        HashMap<String, String> map = new HashMap<String, String>();
+
+                        // adding each child node to HashMap key => value
+                        map.put(TAG_ID_PUB, id_pub_r);
+                        map.put(TAG_lOCALE, locale);
+
+                        // adding HashList to ArrayList
+                        pubList.add(map);
+                    }
+
+                    Log.d("NamePub", pubList.toString());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+        }
+    }
+    class GetGroupName extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * getting All events from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_group", id_group));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_get_group, "POST", params);
+
+            Log.d("group_params: ", params.toString());
+
+            // Check your log cat for JSON reponse
+            Log.d("Name_group: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    // event found
+                    // Getting Array of events
+                    group = json.getJSONArray(TAG_ARTIST);
+
+                    Log.d("yeah_GROUPname: ", group.toString());
+                    // looping through All events
+                    for (int i = 0; i < group.length(); i++) {
+                        JSONObject c = group.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id_group_r = c.getString(TAG_ID_GROUP);
+                        nomeGruppo = c.getString(TAG_ARTISTA);
+
+                        // creating new HashMap
+                        HashMap<String, String> map = new HashMap<String, String>();
+
+                        // adding each child node to HashMap key => value
+                        map.put(TAG_ID_GROUP, id_group_r);
+                        map.put(TAG_ARTISTA, nomeGruppo);
+
+                        // adding HashList to ArrayList
+                        groupList.add(map);
+                    }
+
+                    Log.d("NameGroup", groupList.toString());
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+        }
     }
 }

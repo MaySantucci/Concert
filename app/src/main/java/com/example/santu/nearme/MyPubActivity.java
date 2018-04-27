@@ -102,6 +102,11 @@ public class MyPubActivity extends DrawerMenuActivity {
                 startActivity(add_event);
                 break;
 
+            case R.id.all_my_events:
+                Intent my_events = new Intent (MyPubActivity.this, MyEventsActivity.class);
+                startActivity(my_events);
+                break;
+
         }
     }
 
