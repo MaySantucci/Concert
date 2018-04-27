@@ -8,6 +8,13 @@
     android:orientation="vertical"
     tools:context="com.example.santu.nearme.MyEventsActivity">
 
+    <android.support.v7.widget.Toolbar
+    android:id="@+id/toolbar_events"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    </android.support.v7.widget.Toolbar>
         <!--<ListView android:id="@+id/list_my_events"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent">-->

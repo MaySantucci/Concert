@@ -81,11 +81,9 @@ public class MyProfileActivity extends DrawerMenuActivity {
     public void OnMenuItemClickListener(MenuItem item){
         switch (item.getItemId()) {
 
-            case R.id.change_email:
-                //TODO change email
-                break;
-            case R.id.change_pw:
-                //TODO go to NEW PUB
+            case R.id.edit_profile:
+                Intent edit_profile = new Intent (MyProfileActivity.this, EditProfileActivity.class);
+                startActivity(edit_profile);
                 break;
             case R.id.delete_account:
                 //TODO in a popup

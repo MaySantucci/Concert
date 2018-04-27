@@ -4,13 +4,9 @@
         android:checkableBehavior="single">
 
                 <item
-                    android:id="@+id/change_email"
-                    android:title="@string/change_email"
+                    android:id="@+id/edit_profile"
+                    android:title="Modifica profilo"
                     android:onClick="OnMenuItemClickListener"/>
-                <item
-                    android:id="@+id/change_pw"
-                    android:title="@string/change_pw"
-                    android:onClick="OnMenuItemClickListener" />
                 <item
                     android:id="@+id/delete_account"
                     android:title="@string/delete_account"

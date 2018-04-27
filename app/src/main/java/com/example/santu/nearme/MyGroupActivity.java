@@ -88,27 +88,6 @@ public class MyGroupActivity extends DrawerMenuActivity {
             case android.R.id.home:
                 NavUtils.navigateUpFromSameTask(this);
                 return true;
-
-            case R.id.change_email:
-                //TODO go to change my email
-                return true;
-            case R.id.change_pw:
-                //TODO go to NEW PUB
-                return true;
-            case R.id.delete_account:
-                //TODO in a popup
-                return true;
-            case R.id.add_group:
-                //TODO go to NEW GROUP
-                return true;
-            case R.id.add_pub:
-                //TODO go to NEW PUB
-                return true;
-            case R.id.log_out:
-                //TODO: go to LOGIN ACTIVITY
-                return true;
-
-
         }
         return super.onOptionsItemSelected(item);
     }

@@ -4,6 +4,7 @@ import android.app.LauncherActivity;
 import android.app.ListActivity;
 import android.content.ClipData;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v4.widget.DrawerLayout;
@@ -71,9 +72,17 @@ public class MyEventsActivity extends ListActivity {
 
         eventsList = new ArrayList<HashMap<String, String>>();
 
-//        ActionBar actionbar = getSupportActionBar();
-//        actionbar.setDisplayHomeAsUpEnabled(true);
-//        actionbar.setHomeAsUpIndicator(R.drawable.ic_back);
+        toolbar = findViewById(R.id.toolbar_events);
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                NavUtils.navigateUpFromSameTask(MyEventsActivity.this);
+            }
+        });
+
 
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
