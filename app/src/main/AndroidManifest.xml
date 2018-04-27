@@ -103,6 +103,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.MyPubActivity" />
         </activity>
+        <activity android:name=".EditGroupActivity"></activity>
     </application>
 
 </manifest>

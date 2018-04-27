@@ -92,6 +92,19 @@ public class MyGroupActivity extends DrawerMenuActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void OnMenuItemClickListener(MenuItem item){
+        switch (item.getItemId()) {
+
+            case R.id.change_group:
+                Intent edit_profile = new Intent (MyGroupActivity.this, EditGroupActivity.class);
+                startActivity(edit_profile);
+                break;
+            case R.id.delete_group:
+                //TODO in a popup
+                break;
+        }
+    }
+
     class GetArtist extends AsyncTask<String, String, String> {
 
         /**

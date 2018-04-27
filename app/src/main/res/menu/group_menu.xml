@@ -4,11 +4,11 @@
         android:checkableBehavior="single">
 
                 <item
-                    android:id="@+id/change"
+                    android:id="@+id/change_group"
                     android:title="Modifica"
                     android:onClick="OnMenuItemClickListener"/>
                 <item
-                    android:id="@+id/delete_account"
+                    android:id="@+id/delete_group"
                     android:title="@string/delete_account"
                     android:onClick="OnMenuItemClickListener" />
 
