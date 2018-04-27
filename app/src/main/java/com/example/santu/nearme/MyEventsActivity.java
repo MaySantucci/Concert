@@ -75,6 +75,7 @@ public class MyEventsActivity extends ListActivity {
         toolbar = findViewById(R.id.toolbar_events);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setTitleTextColor(Color.WHITE);
+        toolbar.setTitle("I miei eventi");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

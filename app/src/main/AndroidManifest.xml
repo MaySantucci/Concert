@@ -81,19 +81,14 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-
-
         <activity android:name=".EditEventActivity" />
-
-        <activity android:name=".EditProfileActivity"
+        <activity
+            android:name=".EditProfileActivity"
             android:label="Modifica profilo">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.santu.nearme.MyProfileActivity" />
         </activity>
-
-
-
 
         <receiver
             android:name=".ConnectivityReceiver"
@@ -103,6 +98,11 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".EditPubActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.santu.nearme.MyPubActivity" />
+        </activity>
     </application>
 
 </manifest>

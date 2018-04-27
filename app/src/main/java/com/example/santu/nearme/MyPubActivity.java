@@ -96,7 +96,10 @@ public class MyPubActivity extends DrawerMenuActivity {
 
     public void OnMenuItemClickListener(MenuItem item){
         switch (item.getItemId()) {
-
+            case R.id.change_pub:
+                Intent change = new Intent (MyPubActivity.this, EditPubActivity.class);
+                startActivity(change);
+                break;
             case R.id.add_event:
                 Intent add_event = new Intent (MyPubActivity.this, AddEventActivity.class);
                 startActivity(add_event);
