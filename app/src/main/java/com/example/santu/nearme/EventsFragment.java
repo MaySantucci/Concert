@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -38,7 +39,7 @@ public class EventsFragment extends ListFragment {
     JSONParser jParser = new JSONParser();
 
     ArrayList<HashMap<String, String>> eventsList;
-
+    ListView lv;
 
     // url to get all events list
     private static String url_all_events = "http://toponconcert.altervista.org/api.toponconcert.info/get_all_events.php";
@@ -176,7 +177,29 @@ public class EventsFragment extends ListFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            lv = getListView();
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d("PROVIAMO ANCORA?__", adapterView.getItemAtPosition(i).toString());
+                }
+            });
+
+            lv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Log.d("VEDIAMO__", getSelectedItemId()+"");
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
     }
+
+
 }
 

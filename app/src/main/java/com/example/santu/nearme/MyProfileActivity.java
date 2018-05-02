@@ -86,7 +86,8 @@ public class MyProfileActivity extends DrawerMenuActivity {
                 startActivity(edit_profile);
                 break;
             case R.id.delete_account:
-                //TODO in a popup
+                Intent delete_profile = new Intent (MyProfileActivity.this, DeleteProfileActivity.class);
+                startActivity(delete_profile);
                 break;
             case R.id.add_group:
                 Intent add_group = new Intent (MyProfileActivity.this, AddArtistActivity.class);

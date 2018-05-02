@@ -35,7 +35,7 @@ public class EditGroupActivity extends DrawerMenuActivity {
     JSONParser jsonParser = new JSONParser();
 
     private static String url_get_group = "http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
-    private static String url_update_group = "http://toponconcert.altervista.org/api.toponconcert.info/update_group.php";
+    private static String url_update_group = "http://toponconcert.altervista.org/api.toponconcert.info/update_artist.php";
 
 
     private static final String TAG_SUCCESS = "success";
@@ -218,7 +218,7 @@ public class EditGroupActivity extends DrawerMenuActivity {
             String email_group = _emailText.getText().toString();
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("id_pub", id_pub_u));
+            params.add(new BasicNameValuePair("id_group", id_group_u));
             params.add(new BasicNameValuePair("group_name", group_name));
             params.add(new BasicNameValuePair("phone", phone));
             params.add(new BasicNameValuePair("email_group", email_group));
@@ -263,7 +263,6 @@ public class EditGroupActivity extends DrawerMenuActivity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-
         }
     }
 }

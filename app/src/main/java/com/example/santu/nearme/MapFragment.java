@@ -88,7 +88,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         try {
             if(latlngs.size() == 0 || latlngs == null){
                 Log.d("Caricamento: ", latlngs.size() + "");
@@ -164,7 +163,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 e.printStackTrace();
             }
 
-
             geocoder = new Geocoder(getContext(), Locale.ITALY);
             addressList = new ArrayList<>();
             try {
@@ -194,10 +192,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                 ex.printStackTrace();
             }
 
+
+
             return null;
         }
 
         protected void onPostExecute(String file_url) {
+
             dialog.dismiss();
         }
 

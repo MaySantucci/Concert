@@ -129,8 +129,16 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
         pubList = new ArrayList<HashMap<String, String>>();
         groupList = new ArrayList<>();
-        new DrawerMenuActivity.GetPubName().execute();
-        new DrawerMenuActivity.GetGroupName().execute();
+
+        boolean notFinish = true;
+        while (notFinish) {
+            new DrawerMenuActivity.GetGroupName().execute();
+            new DrawerMenuActivity.GetPubName().execute();
+            notFinish = false;
+        }
+
+        onPrepareOptionsMenu(mMenu);
+        Log.d("sono fuori dal", "while");
     }
 
     @Override
@@ -210,13 +218,18 @@ public class DrawerMenuActivity extends AppCompatActivity {
         id_group = dataUser.get(SessionManager.USER_GROUP);
         id_pub = dataUser.get(SessionManager.USER_PUB);
 
+        boolean pronto = false;
+
         if(id_group != "null" && id_pub != "null"){
 
             Log.d("1 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
+            menu.findItem(R.id.my_group).setTitle("Il mio gruppo ");
+//            menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
             menu.findItem(R.id.add_group).setVisible(false);
 
-            menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
+
+            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
+//            menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
             menu.findItem(R.id.add_pub).setVisible(false);
 
         }
@@ -237,7 +250,8 @@ public class DrawerMenuActivity extends AppCompatActivity {
             menu.findItem(R.id.my_group).setVisible(false);
 
 
-            menu.findItem(R.id.my_pub).setTitle("Locale: " + locale);
+            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
+//            menu.findItem(R.id.my_pub).setTitle("Locale: " + locale);
             menu.findItem(R.id.my_pub).setVisible(true);
             menu.findItem(R.id.add_pub).setVisible(false);
         }
@@ -247,7 +261,8 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
             Log.d("4 caso ____", id_group + " " + id_pub);
             menu.findItem(R.id.add_group).setVisible(false);
-            menu.findItem(R.id.my_group).setTitle("Gruppo: " + nomeGruppo);
+            menu.findItem(R.id.my_group).setTitle("Il mio gruppo");
+//            menu.findItem(R.id.my_group).setTitle("Gruppo: " + nomeGruppo);
 
             menu.findItem(R.id.my_pub).setVisible(false);
             menu.findItem(R.id.add_pub).setVisible(true);
