@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.NavUtils;
@@ -24,6 +25,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.santu.nearme.SessionManager.PREF_NAME;
+import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.google.android.gms.internal.zzbfq.NULL;
+
 public class MyGroupActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
@@ -31,7 +36,9 @@ public class MyGroupActivity extends DrawerMenuActivity {
 
     JSONParser jsonParser = new JSONParser();
 
-    private static String url_get_artist_by_id="http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
+    private static String url_get_artist_by_id = "http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
+    private static String url_delete_artist = "http://toponconcert.altervista.org/api.toponconcert.info/delete_group.php";
+    private static String url_update_user = "http://toponconcert.altervista.org/api.toponconcert.info/delete_user_gruop.php";
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ARTIST = "group";
@@ -92,15 +99,15 @@ public class MyGroupActivity extends DrawerMenuActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void OnMenuItemClickListener(MenuItem item){
+    public void OnMenuItemClickListener(MenuItem item) {
         switch (item.getItemId()) {
 
             case R.id.change_group:
-                Intent edit_profile = new Intent (MyGroupActivity.this, EditGroupActivity.class);
+                Intent edit_profile = new Intent(MyGroupActivity.this, EditGroupActivity.class);
                 startActivity(edit_profile);
                 break;
             case R.id.delete_group:
-                //TODO in a popup
+               new DeleteArtist().execute();
                 break;
         }
     }
@@ -164,4 +171,114 @@ public class MyGroupActivity extends DrawerMenuActivity {
         }
 
     }
+
+    class DeleteArtist extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating pub
+         */
+        protected String doInBackground(String... args) {
+
+            List<NameValuePair> p = new ArrayList<>();
+            p.add(new BasicNameValuePair("id_group", id_group));
+
+            // getting JSON Object
+            // Note that create pub url accepts POST method
+            JSONObject json1 = jsonParser.makeHttpRequest(url_delete_artist, "POST", p);
+
+            try {
+
+                int success1 = json1.getInt(TAG_SUCCESS);
+
+                if (success1 == 1) {
+                    Log.d("Successo: ", success1 + "");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error parsing: ", e.toString());
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+            new UpdateUser().execute();
+        }
+    }
+
+    class UpdateUser extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating pub
+         */
+        protected String doInBackground(String... args) {
+
+            List<NameValuePair> p = new ArrayList<>();
+            p.add(new BasicNameValuePair("email", email));
+
+            // getting JSON Object
+            // Note that create pub url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url_update_user, "POST", p);
+
+            Log.d("p___", p.toString());
+            Log.d("json1 resp__", json.toString());
+
+            try {
+
+                int success1 = json.getInt(TAG_SUCCESS);
+
+                if (success1 == 1) {
+
+                    runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getApplicationContext(), "Utente aggiornato con successo!", Toast.LENGTH_LONG).show();
+                    }
+                });
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error parsing: ", e.toString());
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+            onPrepareOptionsMenu(mMenu);
+
+            int PRIVATE_MODE = 0;
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(USER_GROUP, "null");
+            editor.commit();
+
+            finish();
+
+            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(i);
+        }
+
+    }
+
 }

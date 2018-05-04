@@ -65,6 +65,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<List<Address>> addressList = null;
     List<String> addresses = null;
     List<String> nomiPub = null;
+    ProgressDialog dialog;
 
     double lat;
     double lon;
@@ -79,14 +80,13 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_map, container, false);
 
-        SupportMapFragment supportMapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
-        supportMapFragment.getMapAsync(this);
         new MapFragment.getCoordinates().execute();
         return rootView;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
         mMap = googleMap;
         try {
             if(latlngs.size() == 0 || latlngs == null){
@@ -107,16 +107,21 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
             ex.printStackTrace();
         }
 
+        dialog.dismiss();
+    }
+
+    void initializeMap(){
+        SupportMapFragment supportMapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map));
+        supportMapFragment.getMapAsync(this);
     }
 
     class getCoordinates extends AsyncTask<String, Void, String> {
 
-        ProgressDialog dialog = new ProgressDialog(getContext());
-
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-           dialog.setMessage("Caricamento in corso...");
+            dialog = new ProgressDialog(getContext());
+            dialog.setMessage("Caricamento in corso...");
            dialog.setCanceledOnTouchOutside(false);
             dialog.show();
         }
@@ -198,8 +203,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         }
 
         protected void onPostExecute(String file_url) {
-
-            dialog.dismiss();
+            initializeMap();
         }
 
     }

@@ -1,5 +1,6 @@
 package com.example.santu.nearme;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.design.widget.NavigationView;
@@ -148,6 +149,9 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
                             Toast.makeText(getApplicationContext(), "Utente eliminato con successo!", Toast.LENGTH_LONG).show();
                         }
                     });
+                    finish();
+                    Intent i = new Intent (DeleteProfileActivity.this, LoginActivity.class);
+                    startActivity(i);
                 }
 
             } catch (Exception e){
@@ -282,4 +286,6 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
 
         }
     }
+
+    //TODO: Update Event - delete events that have this artist or pub
 }

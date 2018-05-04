@@ -218,61 +218,72 @@ public class DrawerMenuActivity extends AppCompatActivity {
         id_group = dataUser.get(SessionManager.USER_GROUP);
         id_pub = dataUser.get(SessionManager.USER_PUB);
 
-        boolean pronto = false;
-
-        if(id_group != "null" && id_pub != "null"){
-
-            Log.d("1 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.my_group).setTitle("Il mio gruppo ");
-//            menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
+        if(id_group != null && !id_group.isEmpty()){
+            menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
             menu.findItem(R.id.add_group).setVisible(false);
+        } else {
+            menu.findItem(R.id.my_group).setVisible(false);
+        }
 
+        if(id_pub != null && !id_pub.isEmpty()){
+            menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
+            menu.findItem(R.id.add_pub).setVisible(false);
+        } else {
+            menu.findItem(R.id.my_pub).setVisible(false);
+        }
 
-            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
+//        if(id_group != null && id_pub != null){
+//
+//            Log.d("1 caso ____", id_group + " " + id_pub);
+////            menu.findItem(R.id.my_group).setTitle("Il mio gruppo ");
+//
+//
+//
+////            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
 //            menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
-            menu.findItem(R.id.add_pub).setVisible(false);
-
-        }
-        else if(id_pub == "null" && id_group == "null"){
-
-            Log.d("2 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.add_group).setVisible(true);
-            menu.findItem(R.id.my_group).setVisible(false);
-
-            menu.findItem(R.id.my_pub).setVisible(false);
-            menu.findItem(R.id.add_pub).setVisible(true);
-        }
-
-        else if(id_pub != "null" && id_group == "null"){
-
-            Log.d("3 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.add_group).setVisible(true);
-            menu.findItem(R.id.my_group).setVisible(false);
-
-
-            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
+//            menu.findItem(R.id.add_pub).setVisible(false);
+//
+//        }
+//        else if(id_pub == "null" && id_group == "null"){
+//
+//            Log.d("2 caso ____", id_group + " " + id_pub);
+//            menu.findItem(R.id.add_group).setVisible(true);
+//            menu.findItem(R.id.my_group).setVisible(false);
+//
+//            menu.findItem(R.id.my_pub).setVisible(false);
+//            menu.findItem(R.id.add_pub).setVisible(true);
+//        }
+//
+//        else if(id_pub != "null" && id_group == "null"){
+//
+//            Log.d("3 caso ____", id_group + " " + id_pub);
+//            menu.findItem(R.id.add_group).setVisible(true);
+//            menu.findItem(R.id.my_group).setVisible(false);
+//
+//
+////            menu.findItem(R.id.my_pub).setTitle("Il mio locale");
 //            menu.findItem(R.id.my_pub).setTitle("Locale: " + locale);
-            menu.findItem(R.id.my_pub).setVisible(true);
-            menu.findItem(R.id.add_pub).setVisible(false);
-        }
-
-
-        else if(id_pub == "null" && id_group != "null"){
-
-            Log.d("4 caso ____", id_group + " " + id_pub);
-            menu.findItem(R.id.add_group).setVisible(false);
-            menu.findItem(R.id.my_group).setTitle("Il mio gruppo");
+//            menu.findItem(R.id.my_pub).setVisible(true);
+//            menu.findItem(R.id.add_pub).setVisible(false);
+//        }
+//
+//
+//        else if(id_pub == "null" && id_group != "null"){
+//
+//            Log.d("4 caso ____", id_group + " " + id_pub);
+//            menu.findItem(R.id.add_group).setVisible(false);
+////            menu.findItem(R.id.my_group).setTitle("Il mio gruppo");
 //            menu.findItem(R.id.my_group).setTitle("Gruppo: " + nomeGruppo);
-
-            menu.findItem(R.id.my_pub).setVisible(false);
-            menu.findItem(R.id.add_pub).setVisible(true);
-        }
-
-
-
-        for (int i = 0; i < menu.size(); i ++){
-            Log.e("item _____", menu.getItem(i).toString());
-        }
+//
+//            menu.findItem(R.id.my_pub).setVisible(false);
+//            menu.findItem(R.id.add_pub).setVisible(true);
+//        }
+//
+//
+//
+//        for (int i = 0; i < menu.size(); i ++){
+//            Log.e("item _____", menu.getItem(i).toString());
+//        }
 
         return super.onPrepareOptionsMenu(menu);
     }
