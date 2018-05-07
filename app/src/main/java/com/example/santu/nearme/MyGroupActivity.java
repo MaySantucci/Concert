@@ -270,7 +270,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
             int PRIVATE_MODE = 0;
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
             SharedPreferences.Editor editor = sharedpreferences.edit();
-            editor.putString(USER_GROUP, "null");
+            editor.putString(USER_GROUP, null);
             editor.commit();
 
             finish();

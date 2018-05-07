@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 public class DrawerMenuActivity extends AppCompatActivity {
 
@@ -68,6 +69,8 @@ public class DrawerMenuActivity extends AppCompatActivity {
     // events JSONArray
     JSONArray pub = null;
     JSONArray group = null;
+    boolean hasFinishedGroup = false;
+    boolean hasFinishedPub = false;
 
 
     @Override
@@ -75,16 +78,21 @@ public class DrawerMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drawer_menu);
 
-
         session = new SessionManager(getApplicationContext());
         session.checkLogin();
 
+
+        HashMap<String, String> dataUser = session.getUserDetails();
+        email = dataUser.get(SessionManager.USER_EMAIL);
+        nome = dataUser.get(SessionManager.USER_NAME);
+        cognome = dataUser.get(SessionManager.USER_SURNAME);
+        id_group = dataUser.get(SessionManager.USER_GROUP);
+        id_pub = dataUser.get(SessionManager.USER_PUB);
 
         mDrawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view_drawer);
         mMenu = navigationView.getMenu();
 
-        onPrepareOptionsMenu(mMenu);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -103,42 +111,18 @@ public class DrawerMenuActivity extends AppCompatActivity {
                     }
                 });
 
-        mDrawerLayout.addDrawerListener(
-                new DrawerLayout.DrawerListener() {
-                    @Override
-                    public void onDrawerSlide(View drawerView, float slideOffset) {
-                        // Respond when the drawer's position changes
-                    }
 
-                    @Override
-                    public void onDrawerOpened(View drawerView) {
-                        // Respond when the drawer is opened
-                    }
-
-                    @Override
-                    public void onDrawerClosed(View drawerView) {
-                        // Respond when the drawer is closed
-                    }
-
-                    @Override
-                    public void onDrawerStateChanged(int newState) {
-                        // Respond when the drawer motion state changes
-                    }
-                }
-        );
-
-        pubList = new ArrayList<HashMap<String, String>>();
-        groupList = new ArrayList<>();
-
-        boolean notFinish = true;
-        while (notFinish) {
-            new DrawerMenuActivity.GetGroupName().execute();
+        if(id_pub != null){
             new DrawerMenuActivity.GetPubName().execute();
-            notFinish = false;
+        } else {
+            hasFinishedPub = true;
+        }
+        if(id_group != null){
+            new DrawerMenuActivity.GetGroupName().execute();
+        } else {
+            hasFinishedGroup = true;
         }
 
-        onPrepareOptionsMenu(mMenu);
-        Log.d("sono fuori dal", "while");
     }
 
     @Override
@@ -211,24 +195,24 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
         Log.e("size _____", menu.size() + "");
 
-        HashMap<String, String> dataUser = session.getUserDetails();
-        email = dataUser.get(SessionManager.USER_EMAIL);
-        nome = dataUser.get(SessionManager.USER_NAME);
-        cognome = dataUser.get(SessionManager.USER_SURNAME);
-        id_group = dataUser.get(SessionManager.USER_GROUP);
-        id_pub = dataUser.get(SessionManager.USER_PUB);
 
         if(id_group != null && !id_group.isEmpty()){
+            Log.d("sono nell'if group", "vediamo");
             menu.findItem(R.id.my_group).setTitle("Il mio gruppo: " + nomeGruppo);
             menu.findItem(R.id.add_group).setVisible(false);
         } else {
+            Log.d("sono nell'else group", "vediamo");
             menu.findItem(R.id.my_group).setVisible(false);
         }
 
         if(id_pub != null && !id_pub.isEmpty()){
+
+            Log.d("sono nell'if pub", "vediamo");
             menu.findItem(R.id.my_pub).setTitle("Il mio locale: " + locale);
             menu.findItem(R.id.add_pub).setVisible(false);
         } else {
+
+            Log.d("sono nell'else pub", "vediamo");
             menu.findItem(R.id.my_pub).setVisible(false);
         }
 
@@ -327,22 +311,11 @@ public class DrawerMenuActivity extends AppCompatActivity {
                     for (int i = 0; i < pub.length(); i++) {
                         JSONObject c = pub.getJSONObject(i);
 
-                        // Storing each json item in variable
-                        String id_pub_r = c.getString(TAG_ID_PUB);
                         locale = c.getString(TAG_lOCALE);
 
-                        // creating new HashMap
-                        HashMap<String, String> map = new HashMap<String, String>();
+                        Log.d("locale", locale);
 
-                        // adding each child node to HashMap key => value
-                        map.put(TAG_ID_PUB, id_pub_r);
-                        map.put(TAG_lOCALE, locale);
-
-                        // adding HashList to ArrayList
-                        pubList.add(map);
                     }
-
-                    Log.d("NamePub", pubList.toString());
                 }
 
             } catch (JSONException e) {
@@ -358,6 +331,12 @@ public class DrawerMenuActivity extends AppCompatActivity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
+            Log.d("NamePub", locale);
+            hasFinishedPub = true;
+            if(hasFinishedGroup && hasFinishedPub){
+                Log.d("hasFinishedPub: ", hasFinishedPub + " " + "hasFinishedGroup: " + hasFinishedGroup + "");
+                onPrepareOptionsMenu(mMenu);
+            }
         }
     }
     class GetGroupName extends AsyncTask<String, String, String> {
@@ -400,18 +379,8 @@ public class DrawerMenuActivity extends AppCompatActivity {
                         JSONObject c = group.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id_group_r = c.getString(TAG_ID_GROUP);
                         nomeGruppo = c.getString(TAG_ARTISTA);
 
-                        // creating new HashMap
-                        HashMap<String, String> map = new HashMap<String, String>();
-
-                        // adding each child node to HashMap key => value
-                        map.put(TAG_ID_GROUP, id_group_r);
-                        map.put(TAG_ARTISTA, nomeGruppo);
-
-                        // adding HashList to ArrayList
-                        groupList.add(map);
                     }
 
                     Log.d("NameGroup", groupList.toString());
@@ -430,6 +399,10 @@ public class DrawerMenuActivity extends AppCompatActivity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
+            hasFinishedGroup = true;
+            if(hasFinishedGroup && hasFinishedPub){
+                onPrepareOptionsMenu(mMenu);
+            }
         }
     }
 }

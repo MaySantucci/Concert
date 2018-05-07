@@ -191,8 +191,16 @@ public class LoginActivity extends AppCompatActivity
                     nome = c.getString(TAG_NOME);
                     cognome = c.getString(TAG_COGNOME);
                     email = c.getString(TAG_EMAIL);
-                    id_group = c.getString(TAG_GROUP);
-                    id_pub = c.getString(TAG_PUB);
+                    if(c.isNull(TAG_GROUP)){
+                        id_group = null;
+                    } else {
+                        id_group = c.getString(TAG_GROUP);
+                    }
+                    if(c.isNull(TAG_PUB)){
+                        id_pub = null;
+                    } else {
+                        id_pub = c.getString(TAG_PUB);
+                    }
 
                 }
             }
@@ -203,14 +211,6 @@ public class LoginActivity extends AppCompatActivity
             e.printStackTrace();
         }
         session.createLoginSession(nome, cognome, email, id_group, id_pub );
-
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                Toast.makeText(LoginActivity.this, nome + " " + cognome, Toast.LENGTH_LONG).show();
-//            }
-//        });
-
         Intent i = new Intent (this, MainActivity.class);
         startActivity(i);
     }
