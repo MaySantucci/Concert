@@ -236,9 +236,7 @@ public class EditGroupActivity extends DrawerMenuActivity {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // successfully created pub
-                    session.logoutUser();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent i = new Intent(getApplicationContext(), MyGroupActivity.class);
                     startActivity(i);
                 } else {
                     // failed to create user

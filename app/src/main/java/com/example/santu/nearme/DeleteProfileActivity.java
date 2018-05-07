@@ -36,7 +36,8 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
     private static String url_delete_user = "http://toponconcert.altervista.org/api.toponconcert.info/delete_user.php";
     private static String url_delete_artist = "http://toponconcert.altervista.org/api.toponconcert.info/delete_group.php";
     private static String url_delete_pub = "http://toponconcert.altervista.org/api.toponconcert.info/delete_pub.php";
-    private static String url_delete_event = "http://toponconcert.altervista.org/api.toponconcert.info/delete_event_by_user.php";
+    private static String url_delete_events = "http://toponconcert.altervista.org/api.toponconcert.info/delete_all_events_by_group.php";
+    private static String url_delete_events_pub = "http://toponconcert.altervista.org/api.toponconcert.info/delete_all_events_by_pub.php";
 
 
     private static final String TAG_SUCCESS = "success";
@@ -165,7 +166,6 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-
         }
     }
     class DeleteArtist extends AsyncTask<String, String, String> {
@@ -224,6 +224,8 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
             SharedPreferences.Editor editor = sharedpreferences.edit();
             editor.putString(USER_GROUP, "NULL");
             editor.commit();
+
+            new DeleteEventsGroup().execute();
         }
     }
     class DeletePub extends AsyncTask<String, String, String> {
@@ -283,9 +285,112 @@ public class DeleteProfileActivity extends DrawerMenuActivity {
             editor.putString(USER_PUB, "NULL");
             editor.commit();
 
-
+            new DeleteEventsPub().execute();
         }
     }
 
-    //TODO: Update Event - delete events that have this artist or pub
+
+    class DeleteEventsGroup extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * getting All events from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_group", id_group));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_delete_events, "POST", params);
+
+            Log.d("my_ params: ", params.toString());
+
+            // Check your log cat for JSON reponse
+            Log.d("Me: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if(success == 1){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Eventi eliminati con successo!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+        }
+    }
+
+    class DeleteEventsPub extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * getting All events from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_pub", id_pub));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_delete_events_pub, "POST", params);
+
+            Log.d("my_ params: ", params.toString());
+
+            // Check your log cat for JSON reponse
+            Log.d("Me: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if(success == 1){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Eventi eliminati con successo!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+        }
+    }
 }

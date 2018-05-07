@@ -29,6 +29,7 @@ import java.util.List;
 
 import static com.example.santu.nearme.SessionManager.PREF_NAME;
 import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.example.santu.nearme.SessionManager.USER_PUB;
 import static com.google.android.gms.internal.zzbfq.NULL;
 
 public class MyGroupActivity extends DrawerMenuActivity {
@@ -42,6 +43,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
     private static String url_get_artist_by_id = "http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
     private static String url_delete_artist = "http://toponconcert.altervista.org/api.toponconcert.info/delete_group.php";
     private static String url_update_user = "http://toponconcert.altervista.org/api.toponconcert.info/delete_user_gruop.php";
+    private static String url_delete_events = "http://toponconcert.altervista.org/api.toponconcert.info/delete_all_events_by_group.php";
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_ARTIST = "group";
@@ -228,7 +230,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
         }
 
         protected void onPostExecute(String file_url) {
-            new UpdateUser().execute();
+            new DeleteEvents().execute();
         }
     }
 
@@ -295,6 +297,60 @@ public class MyGroupActivity extends DrawerMenuActivity {
             onPrepareOptionsMenu(mMenu);
         }
 
+    }
+
+
+    class DeleteEvents extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * getting All events from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id_group", id_group));
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_delete_events, "POST", params);
+
+            Log.d("my_ params: ", params.toString());
+
+            // Check your log cat for JSON reponse
+            Log.d("Me: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if(success == 1){
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Eventi eliminati con successo!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+            new MyGroupActivity.UpdateUser().execute();
+        }
     }
 
 
