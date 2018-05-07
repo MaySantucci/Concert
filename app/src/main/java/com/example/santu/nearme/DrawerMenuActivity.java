@@ -37,8 +37,6 @@ import java.util.concurrent.ExecutionException;
 public class DrawerMenuActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
     Menu mMenu;
     SessionManager session;
 
@@ -46,16 +44,9 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
     JSONParser jParser = new JSONParser();
 
-    ArrayList<HashMap<String, String>> pubList;
-    ArrayList<HashMap<String, String>> groupList;
-
-    ListAdapter adapter;
-
     // url to get all events list
     private static String url_get_pub = "http://toponconcert.altervista.org/api.toponconcert.info/get_pub_by_id.php";
     private static String url_get_group = "http://toponconcert.altervista.org/api.toponconcert.info/get_artist_by_id.php";
-//    private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
-    //private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -383,7 +374,6 @@ public class DrawerMenuActivity extends AppCompatActivity {
 
                     }
 
-                    Log.d("NameGroup", groupList.toString());
                 }
 
             } catch (JSONException e) {

@@ -44,8 +44,6 @@ public class MyEventsActivity extends ListActivity {
 
     // url to get all events list
     private static String url_my_events = "http://toponconcert.altervista.org/api.toponconcert.info/get_my_events.php";
-//    private static String url_all_events = "http://192.168.43.67/api.toponconcert.info/get_all_events.php";
-    //private static String url_all_events="http://192.168.0.100/api.toponconcert.info/get_all_events.php";
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
@@ -97,6 +95,8 @@ public class MyEventsActivity extends ListActivity {
 
         Log.d("test__", id_pub);
         new MyEventsActivity.LoadMyEvents().execute();
+
+
 
     }
 
@@ -195,39 +195,39 @@ public class MyEventsActivity extends ListActivity {
 
             // updating UI from Background Thread
             try {
+
+                my_events = getListView();
                 runOnUiThread(new Runnable() {
                     public void run() {
                         /**
                          * Updating parsed JSON data into ListView
                          * */
-//                        my_events = findViewById(R.id.list_my_events);
-//                        if(!eventsList.isEmpty()){
-//
-//                            adapter = new SimpleAdapter(
-//                                    getApplicationContext(), eventsList,
-//                                    R.layout.my_event_row, new String[]{
-//                                    TAG_ID_EVENTO, TAG_ARTISTA,TAG_DATA, TAG_ORA, TAG_DESCRIZIONE },
-//                                    new int[]{R.id.id_evento, R.id.artista, R.id.data, R.id.ora, R.id.descrizione});
-//                            // updating listview
-//                            my_events.setAdapter(adapter);
-//                        } else {
-//                            my_events.setVisibility(View.INVISIBLE);
-//                            TextView no_events = findViewById(R.id.empty);
-//                            no_events.setVisibility(View.VISIBLE);
-//                        }
+
                         adapter = new SimpleAdapter(
                                 getApplicationContext(), eventsList,
                                 R.layout.my_event_row, new String[]{
-                                TAG_ID_EVENTO, TAG_ARTISTA,TAG_DATA, TAG_ORA, TAG_DESCRIZIONE },
-                                new int[]{R.id.id_evento, R.id.artista, R.id.data, R.id.ora, R.id.descrizione});
+                                TAG_ARTISTA,TAG_DATA, TAG_ORA, TAG_DESCRIZIONE },
+                                new int[]{ R.id.artista, R.id.data, R.id.ora, R.id.descrizione});
 
-                        setListAdapter(adapter);
+                       my_events.setAdapter(adapter);
                     }
 
                 });
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            Log.d("elem 1:", my_events.getItemAtPosition(0).toString());
+            Log.d("elem 2:", my_events.getItemAtPosition(1).toString());
+
+
+            my_events.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                    Log.d("position", position + "");
+                }
+            });
+
         }
     }
 }
