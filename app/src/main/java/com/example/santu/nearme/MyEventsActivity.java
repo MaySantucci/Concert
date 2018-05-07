@@ -1,15 +1,10 @@
 package com.example.santu.nearme;
 
-import android.app.LauncherActivity;
 import android.app.ListActivity;
-import android.content.ClipData;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -59,6 +53,7 @@ public class MyEventsActivity extends ListActivity {
     JSONArray events = null;
 
     String nome, cognome, email, id_pub, id_group;
+    String id_evento, locale, artista, data, ora, descrizione;
 
     SessionManager session;
 
@@ -153,12 +148,13 @@ public class MyEventsActivity extends ListActivity {
                         JSONObject c = events.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id_evento = c.getString(TAG_ID_EVENTO);
-                        String locale = c.getString(TAG_lOCALE);
-                        String artista = c.getString(TAG_ARTISTA);
-                        String data = c.getString(TAG_DATA);
-                        String ora = c.getString(TAG_ORA);
-                        String descrizione = c.getString(TAG_DESCRIZIONE);
+                        id_evento = c.getString(TAG_ID_EVENTO);
+                        locale = c.getString(TAG_lOCALE);
+                        artista = c.getString(TAG_ARTISTA);
+                        data = c.getString(TAG_DATA);
+                        ora = c.getString(TAG_ORA);
+                        descrizione = c.getString(TAG_DESCRIZIONE);
+
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -217,14 +213,18 @@ public class MyEventsActivity extends ListActivity {
                 e.printStackTrace();
             }
 
-            Log.d("elem 1:", my_events.getItemAtPosition(0).toString());
-            Log.d("elem 2:", my_events.getItemAtPosition(1).toString());
-
-
             my_events.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                     Log.d("position", position + "");
+                    Intent i = new Intent(MyEventsActivity.this, EditDeleteEventActivity.class);
+
+                    i.putExtra("id_evento", id_evento);
+                    i.putExtra("gruppo", artista);
+                    i.putExtra("data", data);
+                    i.putExtra("ora", ora);
+                    i.putExtra("descrizione", descrizione);
+                    startActivity(i);
                 }
             });
 

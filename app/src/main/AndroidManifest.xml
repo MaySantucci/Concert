@@ -81,7 +81,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".SignupActivity" />
-        <activity android:name=".EditEventActivity" />
+        <activity
+            android:name=".EditDeleteEventActivity"
+            android:label="Dettagli evento">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.santu.nearme.MyEventsActivity" />
+        </activity>
         <activity
             android:name=".EditProfileActivity"
             android:label="Modifica profilo">
@@ -104,11 +110,18 @@
                 android:value="com.example.santu.nearme.MyPubActivity" />
         </activity>
         <activity android:name=".EditGroupActivity" />
-        <activity android:name=".DeleteProfileActivity"
+        <activity
+            android:name=".DeleteProfileActivity"
             android:label="Elimina profilo">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.santu.nearme.MyProfileActivity"/>
+                android:value="com.example.santu.nearme.MyProfileActivity" />
+        </activity>
+        <activity android:name=".EditEventActivity"
+            android:label="Modifica evento">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.santu.nearme.MyEventsActivity" />
         </activity>
     </application>
 
