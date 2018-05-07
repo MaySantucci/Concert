@@ -86,9 +86,14 @@ public class ArtistsFragment extends ListFragment {
         /**
          * Before starting background thread Show Progress Dialog
          */
+        ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = new ProgressDialog(getContext());
+            dialog.setMessage("Caricamento in corso...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         /**
@@ -175,6 +180,7 @@ public class ArtistsFragment extends ListFragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            dialog.dismiss();
         }
     }
 }

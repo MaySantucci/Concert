@@ -1,6 +1,7 @@
 package com.example.santu.nearme;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
@@ -28,6 +29,12 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import static com.example.santu.nearme.SessionManager.PREF_NAME;
+import static com.example.santu.nearme.SessionManager.USER_EMAIL;
+import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.example.santu.nearme.SessionManager.USER_NAME;
+import static com.example.santu.nearme.SessionManager.USER_SURNAME;
+
 public class EditProfileActivity extends DrawerMenuActivity {
     private Toolbar toolbar;
     SessionManager session;
@@ -50,6 +57,8 @@ public class EditProfileActivity extends DrawerMenuActivity {
     JSONArray user = null;
 
     String id_user, name, surname, email_r, password;
+
+    String nome_edit,cognome_edit, email_edit, password_edit;
 
     @InjectView(R.id.name) EditText _nameText;
     @InjectView(R.id.surname) EditText _surnameText;
@@ -183,7 +192,6 @@ public class EditProfileActivity extends DrawerMenuActivity {
             _surnameText.setText(surname);
             _emailText.setText(email_r);
             _passwordText.setText(password);
-
         }
     }
     class EditUser extends AsyncTask<String, String, String> {
@@ -201,17 +209,20 @@ public class EditProfileActivity extends DrawerMenuActivity {
          */
         protected String doInBackground(String... args) {
 
-            String name = _nameText.getText().toString();
-            String surname = _surnameText.getText().toString();
-            String email = _emailText.getText().toString();
-            String password = _passwordText.getText().toString();
+            nome_edit = _nameText.getText().toString();
+            cognome_edit = _surnameText.getText().toString();
+            email_edit = _emailText.getText().toString();
+            password_edit = _passwordText.getText().toString();
 
             List<NameValuePair> params = new ArrayList<>();
-            params.add(new BasicNameValuePair("name", name));
-            params.add(new BasicNameValuePair("surname", surname));
-            params.add(new BasicNameValuePair("email", email));
-            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("name", nome_edit));
+            params.add(new BasicNameValuePair("surname", cognome_edit));
+            params.add(new BasicNameValuePair("new_email", email_edit));
+            params.add(new BasicNameValuePair("old_email", email));
+            params.add(new BasicNameValuePair("password", password_edit));
 
+
+            Log.d("PARAMETRI___", params.toString());
             // getting JSON Object
             // Note that create pub url accepts POST method
             JSONObject json = jParser.makeHttpRequest(url_update_user,"POST", params);
@@ -224,10 +235,15 @@ public class EditProfileActivity extends DrawerMenuActivity {
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
-                    // successfully created pub
-                    session.logoutUser();
-                    Intent i = new Intent(getApplicationContext(), LoginActivity.class);
-                    startActivity(i);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Profilo aggiornato con successo!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
+
+
                 } else {
                     // failed to create user
 
@@ -252,6 +268,16 @@ public class EditProfileActivity extends DrawerMenuActivity {
          **/
         protected void onPostExecute(String file_url) {
 
+            int PRIVATE_MODE = 0;
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(USER_NAME, nome_edit);
+            editor.putString(USER_SURNAME, cognome_edit);
+            editor.putString(USER_EMAIL, email_edit);
+            editor.commit();
+
+            Intent i = new Intent (EditProfileActivity.this, MainActivity.class);
+            startActivity(i);
         }
     }
 }

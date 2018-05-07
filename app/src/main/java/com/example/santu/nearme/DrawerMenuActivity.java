@@ -335,6 +335,7 @@ public class DrawerMenuActivity extends AppCompatActivity {
         /**
          * Before starting background thread Show Progress Dialog
          */
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();

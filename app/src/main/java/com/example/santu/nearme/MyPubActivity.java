@@ -40,7 +40,7 @@ public class MyPubActivity extends DrawerMenuActivity {
 
     private static String url_get_pub_by_id="http://toponconcert.altervista.org/api.toponconcert.info/get_pub_by_id.php";
     private static String url_delete_pub ="http://toponconcert.altervista.org/api.toponconcert.info/delete_pub.php";
-    private static String url_update_user = "http://toponconcert.altervista.org/api.toponconcert.info/update_user_pub.php";
+    private static String url_update_user = "http://toponconcert.altervista.org/api.toponconcert.info/delete_user_pub.php";
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_PUB = "pub";
@@ -130,9 +130,14 @@ public class MyPubActivity extends DrawerMenuActivity {
         /**
          * Before starting background thread Show Progress Dialog
          */
+        ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = new ProgressDialog(MyPubActivity.this);
+            dialog.setMessage("Caricamento in corso...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         /**
@@ -183,6 +188,7 @@ public class MyPubActivity extends DrawerMenuActivity {
             pubName.setText(pub_name);
             pubEmail.setText(email_pub);
             pubAddress.setText(address + ", " + num_civico + " - " + city);
+            dialog.dismiss();
         }
 
     }

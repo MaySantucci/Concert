@@ -13,13 +13,6 @@ tools:context="com.example.santu.nearme.EditProfileActivity">
     android:paddingTop="56dp"
     android:paddingLeft="24dp"
     android:paddingRight="24dp">
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:text="Quando si modifica il proprio profilo, è necessario riaccedere perché le modifiche siano apportate! "/>
-    <!--  Name Label -->
     <android.support.design.widget.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

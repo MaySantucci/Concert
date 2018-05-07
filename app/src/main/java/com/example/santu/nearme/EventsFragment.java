@@ -88,9 +88,14 @@ public class EventsFragment extends ListFragment {
         /**
          * Before starting background thread Show Progress Dialog
          */
+        ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = new ProgressDialog(getContext());
+            dialog.setMessage("Caricamento in corso...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         /**
@@ -178,25 +183,7 @@ public class EventsFragment extends ListFragment {
                 e.printStackTrace();
             }
 
-            lv = getListView();
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    Log.d("PROVIAMO ANCORA?__", adapterView.getItemAtPosition(i).toString());
-                }
-            });
-
-            lv.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Log.d("VEDIAMO__", getSelectedItemId()+"");
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-
-                }
-            });
+            dialog.dismiss();
         }
     }
 
