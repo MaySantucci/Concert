@@ -1,6 +1,8 @@
 package com.example.santu.nearme;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.DeadObjectException;
 import android.support.design.widget.NavigationView;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -24,14 +27,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static com.example.santu.nearme.SessionManager.PREF_NAME;
+import static com.example.santu.nearme.SessionManager.USER_GROUP;
+import static com.example.santu.nearme.SessionManager.USER_PUB;
+
 public class MyPubActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
-
+    ProgressDialog dialogDelete;
 
     JSONParser jsonParser = new JSONParser();
 
     private static String url_get_pub_by_id="http://toponconcert.altervista.org/api.toponconcert.info/get_pub_by_id.php";
+    private static String url_delete_pub ="http://toponconcert.altervista.org/api.toponconcert.info/delete_pub.php";
+    private static String url_update_user = "http://toponconcert.altervista.org/api.toponconcert.info/update_user_pub.php";
 
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_PUB = "pub";
@@ -99,6 +108,9 @@ public class MyPubActivity extends DrawerMenuActivity {
             case R.id.change_pub:
                 Intent change = new Intent (MyPubActivity.this, EditPubActivity.class);
                 startActivity(change);
+                break;
+            case R.id.delete_pub:
+                new DeletePub().execute();
                 break;
             case R.id.add_event:
                 Intent add_event = new Intent (MyPubActivity.this, AddEventActivity.class);
@@ -174,4 +186,120 @@ public class MyPubActivity extends DrawerMenuActivity {
         }
 
     }
+
+    class DeletePub extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            dialogDelete = new ProgressDialog(MyPubActivity.this);
+            dialogDelete.setMessage("Eliminazione in corso...");
+            dialogDelete.setCanceledOnTouchOutside(false);
+            dialogDelete.show();
+        }
+
+        /**
+         * Creating pub
+         */
+        protected String doInBackground(String... args) {
+
+            List<NameValuePair> p = new ArrayList<>();
+            p.add(new BasicNameValuePair("id_pub", id_pub));
+
+            // getting JSON Object
+            // Note that create pub url accepts POST method
+            JSONObject json1 = jsonParser.makeHttpRequest(url_delete_pub, "POST", p);
+
+            try {
+
+                int success1 = json1.getInt(TAG_SUCCESS);
+
+                if (success1 == 1) {
+                    Log.d("Successo: ", success1 + "");
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error parsing: ", e.toString());
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+            new MyPubActivity.UpdateUser().execute();
+        }
+    }
+
+    class UpdateUser extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        /**
+         * Creating pub
+         */
+        protected String doInBackground(String... args) {
+
+            List<NameValuePair> p = new ArrayList<>();
+            p.add(new BasicNameValuePair("email", email));
+            p.add(new BasicNameValuePair("id_pub", null));
+
+
+            // getting JSON Object
+            // Note that create pub url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url_update_user, "POST", p);
+
+            Log.d("p___", p.toString());
+            Log.d("json1 resp__", json.toString());
+
+            try {
+
+                int success1 = json.getInt(TAG_SUCCESS);
+
+                if (success1 == 1) {
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getApplicationContext(), "Utente aggiornato con successo!", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.d("Error parsing: ", e.toString());
+            }
+
+            return null;
+        }
+
+        protected void onPostExecute(String file_url) {
+
+            int PRIVATE_MODE = 0;
+            SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putString(USER_PUB, null);
+            editor.commit();
+
+            Intent i = new Intent (MyPubActivity.this, MainActivity.class);
+            startActivity(i);
+
+            dialogDelete.dismiss();
+            onPrepareOptionsMenu(mMenu);
+        }
+
+    }
+
 }

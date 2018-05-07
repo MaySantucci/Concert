@@ -1,5 +1,6 @@
 package com.example.santu.nearme;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +35,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
 
     private Toolbar toolbar;
 
+    String _id_group;
 
     JSONParser jsonParser = new JSONParser();
 
@@ -54,6 +57,8 @@ public class MyGroupActivity extends DrawerMenuActivity {
     String id_group, id_artista, group_name, phone, email_group, typeMusic;
 
     TextView groupName, groupEmail, groupPhone, groupMusic;
+
+    ProgressDialog dialogDelete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,9 +122,15 @@ public class MyGroupActivity extends DrawerMenuActivity {
         /**
          * Before starting background thread Show Progress Dialog
          */
+
+        ProgressDialog dialog;
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialog = new ProgressDialog(MyGroupActivity.this);
+            dialog.setMessage("Caricamento in corso...");
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
 
         /**
@@ -168,6 +179,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
             groupEmail.setText(email_group);
             groupPhone.setText(phone);
             groupMusic.setText(typeMusic);
+            dialog.dismiss();
         }
 
     }
@@ -180,6 +192,10 @@ public class MyGroupActivity extends DrawerMenuActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            dialogDelete = new ProgressDialog(MyGroupActivity.this);
+            dialogDelete.setMessage("Eliminazione in corso...");
+            dialogDelete.setCanceledOnTouchOutside(false);
+            dialogDelete.show();
         }
 
         /**
@@ -250,7 +266,7 @@ public class MyGroupActivity extends DrawerMenuActivity {
                     runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(getApplicationContext(), "Utente aggiornato con successo!", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Gruppo aggiornato con successo!", Toast.LENGTH_LONG).show();
                     }
                 });
                 }
@@ -265,7 +281,6 @@ public class MyGroupActivity extends DrawerMenuActivity {
         }
 
         protected void onPostExecute(String file_url) {
-            onPrepareOptionsMenu(mMenu);
 
             int PRIVATE_MODE = 0;
             SharedPreferences sharedpreferences = getApplicationContext().getSharedPreferences(PREF_NAME, PRIVATE_MODE);
@@ -273,12 +288,14 @@ public class MyGroupActivity extends DrawerMenuActivity {
             editor.putString(USER_GROUP, null);
             editor.commit();
 
-            finish();
-
-            Intent i = new Intent(getApplicationContext(), LoginActivity.class);
+            Intent i = new Intent (MyGroupActivity.this, MainActivity.class);
             startActivity(i);
+
+            dialogDelete.dismiss();
+            onPrepareOptionsMenu(mMenu);
         }
 
     }
+
 
 }
