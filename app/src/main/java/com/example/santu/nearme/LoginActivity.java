@@ -1,9 +1,12 @@
 package com.example.santu.nearme;
 
+        import android.app.AlertDialog;
         import android.app.ProgressDialog;
+        import android.content.DialogInterface;
         import android.graphics.Color;
         import android.os.AsyncTask;
         import android.os.Bundle;
+        import android.provider.Settings;
         import android.support.design.widget.Snackbar;
         import android.support.v7.app.AppCompatActivity;
         import android.util.Log;
@@ -109,6 +112,24 @@ public class LoginActivity extends AppCompatActivity
         } else {
             message = "Connessione assente!";
             color = Color.RED;
+
+            AlertDialog.Builder builder  = new AlertDialog.Builder(this);
+            builder.setTitle("Connessione assente");
+            builder.setMessage("Controlla la tua connessione dati");
+            builder.setPositiveButton("Impostazioni", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    startActivity(new Intent(Settings.ACTION_SETTINGS));
+                }
+            });
+            builder.setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    finish();
+                }
+            });
+            builder.show();
+           // startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
         }
 
         Snackbar snackbar = Snackbar
